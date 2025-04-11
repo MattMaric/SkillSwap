@@ -1,13 +1,7 @@
-import './App.css'
+import AppRouter from './router/AppRouter';
 
 function App() {
-
-  return (
-    <div className="container mt-5">
-      <h1 className="text-primary">Bootstrap</h1>
-      <button className="btn btn-success">Click me</button>
-    </div>
-  );
+  return <AppRouter />;
 }
 
-export default App
+export default App;
