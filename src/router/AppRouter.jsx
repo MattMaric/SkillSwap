@@ -4,17 +4,20 @@ import Explore from '../pages/Explore';
 import MySwaps from '../pages/MySwaps';
 import Profile from '../pages/Profile';
 import NotFound from '../pages/NotFound';
+import Layout from '../components/layout/Layout';
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/swaps" element={<MySwaps />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/swaps" element={<MySwaps />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 };
