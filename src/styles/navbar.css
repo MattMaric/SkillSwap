@@ -1,0 +1,26 @@
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #f8f9fa;
+  transition: color 0.3s ease;
+}
+
+nav.navbar .navbar-brand:hover {
+  color: #0dcaf0;
+}
+
+.navbar-dark .nav-link {
+  color: #adb5bd;
+  transition: color 0.3s ease;
+}
+
+.navbar-dark .nav-link:hover,
+.navbar-dark .nav-link-active {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.navbar {
+  border-bottom: 2px solid #0dcaf0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

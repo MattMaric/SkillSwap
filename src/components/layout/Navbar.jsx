@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import '../../styles/navbar.css';
 
 const Navbar = () => {
   return (
@@ -8,7 +9,7 @@ const Navbar = () => {
         <span className="navbar-toggler-icon" />
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav ms-auto">
+        <ul className="navbar-nav ms-auto gap-lg-2">
           <li className="nav-item">
             <NavLink className="nav-link" to="/explore">Explore</NavLink>
           </li>
