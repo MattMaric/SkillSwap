@@ -7,6 +7,7 @@ import NotFound from '../pages/NotFound';
 import Layout from '../components/layout/Layout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import PrivateRoute from '../components/PrivateRoute';
 
 const AppRouter = () => {
   return (
@@ -15,11 +16,25 @@ const AppRouter = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
-          <Route path="/swaps" element={<MySwaps />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
+          <Route 
+            path="/swaps" 
+            element={
+              <PrivateRoute>
+                <MySwaps />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            } 
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </BrowserRouter>
