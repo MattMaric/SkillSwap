@@ -13,10 +13,10 @@ const NewSwap = () => {
 
   const [errors, setErrors] = useState({});
 
-  const handleChange = useCallback((e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  }, []);
+  };
 
   const validate = () => {
     const newErrors = {};
