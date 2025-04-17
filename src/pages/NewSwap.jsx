@@ -1,8 +1,14 @@
-import React, { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createSwap, clearSwapStatus } from "../features/swaps/swapsSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const NewSwap = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { loading, error, success } = useSelector((state) => state.swaps);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -28,19 +34,45 @@ const NewSwap = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validate();
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    // Form test
-    console.log("Form submitted:", formData);
+    await dispatch(createSwap(formData));
   };
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        navigate("/swaps");
+      }, 1000);
+    }
+  }, [success, navigate]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearSwapStatus());
+    }
+  }, [dispatch]);
 
   return (
     <div className="container mt-5">
       <h2>Create a New Swap</h2>
+      {success && (
+        <div className="alert alert-success">Swap created successfully!</div>
+      )}
+      {error && (
+        <div className="alert alert-danger">Error: {error}</div>
+      )}
+      {Object.keys(errors).length > 0 && (
+        <div className="alert alert-warning">
+          Please fix the highlighted errors before submitting.
+        </div>
+      )}
       <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
           <label className="form-label">Title</label>
