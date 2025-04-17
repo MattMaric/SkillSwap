@@ -8,6 +8,7 @@ import Layout from '../components/layout/Layout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import PrivateRoute from '../components/PrivateRoute';
+import NewSwap from '../pages/NewSwap';
 
 const AppRouter = () => {
   return (
@@ -31,6 +32,14 @@ const AppRouter = () => {
                 <Profile />
               </PrivateRoute>
             } 
+          />
+          <Route 
+            path="/new-swap"
+            element={
+              <PrivateRoute>
+                <NewSwap />
+              </PrivateRoute>
+            }
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
