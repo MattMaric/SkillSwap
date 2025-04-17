@@ -121,8 +121,31 @@ const NewSwap = () => {
             className="form-control"
           />
         </div>
+        {formData.imageUrl && (
+          <div className="my-3 text-center">
+            <img 
+              src={formData.imageUrl}
+              alt="Swap Preview"
+              style={{
+                maxWidth: "200px",
+                maxHeight: "200px",
+                objectFit: "cover",
+                borderRadius: "8px"
+              }}
+            />
+          </div>
+        )}
 
-        <button type="submit" className="btn btn-primary">Submit Swap</button>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? "Submitting..." : "Submit Swap"}
+        </button>
+        {loading && (
+          <div className="mt-3 text-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden"></span>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   )
