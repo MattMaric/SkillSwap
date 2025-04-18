@@ -21,6 +21,20 @@ export const createSwap = createAsyncThunk(
   }
 );
 
+export const fetchSwaps = createAsyncThunk(
+  "swaps/fetchSwaps",
+  async(_, {rejectWithValue}) => {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+      if (!response.ok) throw new Error("Failed to fetch swaps");
+      const data = await response.json();
+      return data.slice(0, 10); // limit the mock
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 const swapsSlice = createSlice({
   name: "swaps",
   initialState: {
@@ -51,6 +65,18 @@ const swapsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.success = false;
+      })
+      .addCase(fetchSwaps.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSwaps.fulfilled, (state, action) => {
+        state.loading = false;
+        state.swaps = action.payload;
+      })
+      .addCase(fetchSwaps.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
   },
 });
