@@ -23,7 +23,13 @@ const MySwaps = () => {
                 <div className="card-body">
                   <h5 className="card-title">{swap.title}</h5>
                   <p className="card-text">{swap.description}</p>
-                  <span className="badge bg-secondary">{swap.category}</span>
+                  <span className="badge bg-secondary mb-4">{swap.category}</span>
+                  {swap.userId === user.id && (
+                    <div>
+                      <button className="btn btn-sm btn-warning me-2">Edit</button>
+                      <button className="btn btn-sm btn-danger">Delete</button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
