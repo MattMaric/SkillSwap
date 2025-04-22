@@ -9,6 +9,7 @@ const NewSwap = () => {
   const navigate = useNavigate();
 
   const { loading, error, success } = useSelector((state) => state.swaps);
+  const user = useSelector((state) => state.auth.user);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -42,7 +43,12 @@ const NewSwap = () => {
       return;
     }
 
-    await dispatch(createSwap(formData));
+    const resultAction = await dispatch(createSwap({
+      ...formData,
+      userId: user.id,
+    }));
+
+    console.log(resultAction)
   };
 
   useEffect(() => {
