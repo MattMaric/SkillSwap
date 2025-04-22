@@ -47,8 +47,6 @@ const NewSwap = () => {
       ...formData,
       userId: user.id,
     }));
-
-    console.log(resultAction)
   };
 
   useEffect(() => {
