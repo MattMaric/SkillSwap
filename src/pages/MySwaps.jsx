@@ -7,11 +7,15 @@ const MySwaps = () => {
   const swaps = useSelector((state) => 
     state.swaps.swaps.filter((swap) => swap.userId === user?.id)
   );
+  const { loading } = useSelector((state) => state.swaps);
 
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
-    dispatch(deleteSwap(id));
+    const confirmed = window.confirm("Are you sure you want to delete this swap?");
+    if (confirmed) {
+      dispatch(deleteSwap(id));
+    }
   }
 
   return (
@@ -36,8 +40,9 @@ const MySwaps = () => {
                       <button 
                         className="btn btn-sm btn-danger"
                         onClick={() => handleDelete(swap.id)}
+                        disabled={loading}
                       >
-                        Delete
+                        {loading ? "Deleting..." : "Delete"}
                       </button>
                     </div>
                 </div>
