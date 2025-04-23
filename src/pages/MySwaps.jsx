@@ -1,11 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteSwap } from "../features/swaps/swapsSlice";
 
 const MySwaps = () => {
   const user = useSelector((state) => state.auth.user);
   const swaps = useSelector((state) => 
     state.swaps.swaps.filter((swap) => swap.userId === user?.id)
   );
+
+  const dispatch = useDispatch();
+
+  const handleDelete = (id) => {
+    dispatch(deleteSwap(id));
+  }
 
   return (
     <div className="container mt-5">
@@ -23,13 +30,16 @@ const MySwaps = () => {
                 <div className="card-body">
                   <h5 className="card-title">{swap.title}</h5>
                   <p className="card-text">{swap.description}</p>
-                  <span className="badge bg-secondary mb-4">{swap.category}</span>
-                  {swap.userId === user.id && (
-                    <div>
+                  <span className="badge bg-secondary">{swap.category}</span>
+                    <div className="mt-4">
                       <button className="btn btn-sm btn-warning me-2">Edit</button>
-                      <button className="btn btn-sm btn-danger">Delete</button>
+                      <button 
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDelete(swap.id)}
+                      >
+                        Delete
+                      </button>
                     </div>
-                  )}
                 </div>
               </div>
             </div>

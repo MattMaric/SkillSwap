@@ -21,6 +21,7 @@ export const createSwap = createAsyncThunk(
   }
 );
 
+// Async thunk for fetching swaps
 export const fetchSwaps = createAsyncThunk(
   "swaps/fetchSwaps",
   async(_, {rejectWithValue}) => {
@@ -34,6 +35,25 @@ export const fetchSwaps = createAsyncThunk(
     }
   }
 );
+
+// Async thunk for deleting swaps
+export const deleteSwap = createAsyncThunk(
+  "swaps/deleteSwap",
+  async (swapId, { rejectWithValue }) => {
+    try {
+      // Replace with real API later
+      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${swapId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Failed to delete swap");
+
+      return swapId;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+)
 
 const swapsSlice = createSlice({
   name: "swaps",
@@ -77,6 +97,9 @@ const swapsSlice = createSlice({
       .addCase(fetchSwaps.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteSwap.fulfilled, (state, action) => {
+        state.swaps = state.swaps.filter(swap => swap.id !== action.payload);
       })
   },
 });
