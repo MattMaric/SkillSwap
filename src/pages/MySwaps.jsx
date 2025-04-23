@@ -1,11 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteSwap } from "../features/swaps/swapsSlice";
 
 const MySwaps = () => {
   const user = useSelector((state) => state.auth.user);
   const swaps = useSelector((state) => 
     state.swaps.swaps.filter((swap) => swap.userId === user?.id)
   );
+  const { loading } = useSelector((state) => state.swaps);
+
+  const dispatch = useDispatch();
+
+  const handleDelete = (id) => {
+    const confirmed = window.confirm("Are you sure you want to delete this swap?");
+    if (confirmed) {
+      dispatch(deleteSwap(id));
+    }
+  }
 
   return (
     <div className="container mt-5">
@@ -24,6 +35,16 @@ const MySwaps = () => {
                   <h5 className="card-title">{swap.title}</h5>
                   <p className="card-text">{swap.description}</p>
                   <span className="badge bg-secondary">{swap.category}</span>
+                    <div className="mt-4">
+                      <button className="btn btn-sm btn-warning me-2">Edit</button>
+                      <button 
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDelete(swap.id)}
+                        disabled={loading}
+                      >
+                        {loading ? "Deleting..." : "Delete"}
+                      </button>
+                    </div>
                 </div>
               </div>
             </div>

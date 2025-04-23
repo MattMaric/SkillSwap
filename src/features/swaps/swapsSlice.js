@@ -21,6 +21,7 @@ export const createSwap = createAsyncThunk(
   }
 );
 
+// Async thunk for fetching swaps
 export const fetchSwaps = createAsyncThunk(
   "swaps/fetchSwaps",
   async(_, {rejectWithValue}) => {
@@ -29,6 +30,49 @@ export const fetchSwaps = createAsyncThunk(
       if (!response.ok) throw new Error("Failed to fetch swaps");
       const data = await response.json();
       return data.slice(0, 10); // limit the mock
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Async thunk for deleting swaps
+export const deleteSwap = createAsyncThunk(
+  "swaps/deleteSwap",
+  async (swapId, { rejectWithValue }) => {
+    try {
+      // Replace with real API later
+      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${swapId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Failed to delete swap");
+
+      return swapId;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+)
+
+// Async thunk for editing swaps
+export const editSwap = createAsyncThunk(
+  "swaps/editSwap",
+  async ({ id, updatedData }, { rejectWithValue }) => {
+    try {
+      // Replace with real API later
+      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(updatedData),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+      if (!response.ok) throw new Error("Failed to update swap");
+
+      const data = await response.json();
+      return { id, updatedData: data };
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -77,6 +121,29 @@ const swapsSlice = createSlice({
       .addCase(fetchSwaps.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteSwap.fulfilled, (state, action) => {
+        state.swaps = state.swaps.filter(swap => swap.id !== action.payload);
+      })
+      .addCase(editSwap.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(editSwap.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success - true;
+
+        const { id, updatedData } = action.payload;
+        const index = state.swaps.findIndex((swap) => swap.id === id);
+        if (index !== -1) {
+          state.swaps[index] = { ...state.swaps[index], ...updatedData };
+        }
+      })
+      .addCase(editSwap.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
       })
   },
 });
