@@ -55,6 +55,30 @@ export const deleteSwap = createAsyncThunk(
   }
 )
 
+// Async thunk for editing swaps
+export const editSwap = createAsyncThunk(
+  "swaps/editSwap",
+  async ({ id, updatedData }, { rejectWithValue }) => {
+    try {
+      // Replace with real API later
+      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(updatedData),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+      if (!response.ok) throw new Error("Failed to update swap");
+
+      const data = await response.json();
+      return { id, updatedData: data };
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 const swapsSlice = createSlice({
   name: "swaps",
   initialState: {
@@ -100,6 +124,26 @@ const swapsSlice = createSlice({
       })
       .addCase(deleteSwap.fulfilled, (state, action) => {
         state.swaps = state.swaps.filter(swap => swap.id !== action.payload);
+      })
+      .addCase(editSwap.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(editSwap.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success - true;
+
+        const { id, updatedData } = action.payload;
+        const index = state.swaps.findIndex((swap) => swap.id === id);
+        if (index !== -1) {
+          state.swaps[index] = { ...state.swaps[index], ...updatedData };
+        }
+      })
+      .addCase(editSwap.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
       })
   },
 });
