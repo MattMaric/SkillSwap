@@ -132,7 +132,7 @@ const swapsSlice = createSlice({
       })
       .addCase(editSwap.fulfilled, (state, action) => {
         state.loading = false;
-        state.success - true;
+        state.success = true;
 
         const { id, updatedData } = action.payload;
         const index = state.swaps.findIndex((swap) => swap.id === id);

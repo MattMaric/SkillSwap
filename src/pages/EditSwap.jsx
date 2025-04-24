@@ -55,7 +55,7 @@ const EditSwap = () => {
     }
 
     const resultAction = await dispatch(
-      editSwap({ id, formData })
+      editSwap({ id, updatedData: formData })
     );
 
     if (editSwap.fulfilled.match(resultAction)) {
