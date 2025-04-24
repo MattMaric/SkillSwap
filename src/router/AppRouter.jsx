@@ -9,6 +9,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import PrivateRoute from '../components/PrivateRoute';
 import NewSwap from '../pages/NewSwap';
+import EditSwap from '../pages/EditSwap';
 
 const AppRouter = () => {
   return (
@@ -41,6 +42,7 @@ const AppRouter = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/swaps/edit/:id" element={<EditSwap />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
