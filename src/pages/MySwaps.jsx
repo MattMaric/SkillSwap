@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteSwap } from "../features/swaps/swapsSlice";
+import { Link } from "react-router-dom";
 
 const MySwaps = () => {
   const user = useSelector((state) => state.auth.user);
@@ -36,7 +37,9 @@ const MySwaps = () => {
                   <p className="card-text">{swap.description}</p>
                   <span className="badge bg-secondary">{swap.category}</span>
                     <div className="mt-4">
-                      <button className="btn btn-sm btn-warning me-2">Edit</button>
+                      <Link to={`/swaps/edit/${swap.id}`} className="btn btn-sm btn-warning me-2">
+                        Edit
+                      </Link>
                       <button 
                         className="btn btn-sm btn-danger"
                         onClick={() => handleDelete(swap.id)}
