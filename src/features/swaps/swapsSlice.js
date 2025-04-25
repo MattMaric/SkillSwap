@@ -86,12 +86,20 @@ const swapsSlice = createSlice({
     loading: false,
     error: null,
     success: false,
+    search: "",
+    category: "",
   }, 
   reducers: {
     clearSwapStatus: (state) => {
       state.success = false;
       state.error = null;
-    }
+    },
+    setSearch: (state, action) => {
+      state.search = action.payload;
+    },
+    setCategoryFilter: (state, action) => {
+      state.category = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -148,5 +156,5 @@ const swapsSlice = createSlice({
   },
 });
 
-export const { clearSwapStatus } = swapsSlice.actions;
+export const { clearSwapStatus, setSearch, setCategoryFilter } = swapsSlice.actions;
 export default swapsSlice.reducer;
