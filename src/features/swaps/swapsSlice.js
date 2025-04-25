@@ -157,4 +157,14 @@ const swapsSlice = createSlice({
 });
 
 export const { clearSwapStatus, setSearch, setCategoryFilter } = swapsSlice.actions;
+
+export const selectFilteredSwaps = (state) => {
+  const { swaps, search, category } = state.swaps;
+  return swaps.filter((swap) => {
+    const matchesSearch = swap.title?.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = category ? swap.category === category : true;
+    return matchesSearch && matchesCategory;
+  })
+}
+
 export default swapsSlice.reducer;
