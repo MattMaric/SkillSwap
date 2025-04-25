@@ -2,11 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteSwap } from "../features/swaps/swapsSlice";
 import { Link } from "react-router-dom";
+import { selectFilteredSwaps } from "../features/swaps/swapsSlice";
 
 const MySwaps = () => {
   const user = useSelector((state) => state.auth.user);
-  const swaps = useSelector((state) => 
-    state.swaps.swaps.filter((swap) => swap.userId === user?.id)
+  const filteredSwaps = useSelector((state) => 
+    selectFilteredSwaps(state).filter((swap) => swap.userId === user?.id)
   );
   const { loading } = useSelector((state) => state.swaps);
 
@@ -22,11 +23,11 @@ const MySwaps = () => {
   return (
     <div className="container mt-5">
       <h2>My Swaps</h2>
-      {swaps.length === 0 ? (
+      {filteredSwaps.length === 0 ? (
         <p>You haven't created any swaps yet.</p>
       ) : (
         <div className="row">
-          {swaps.map((swap) => (
+          {filteredSwaps.map((swap) => (
             <div className="col-md-4 mb-4" key={swap.id}>
               <div className="card h-100">
                 {swap.imageUrl && (

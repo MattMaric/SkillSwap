@@ -86,12 +86,20 @@ const swapsSlice = createSlice({
     loading: false,
     error: null,
     success: false,
+    search: "",
+    category: "",
   }, 
   reducers: {
     clearSwapStatus: (state) => {
       state.success = false;
       state.error = null;
-    }
+    },
+    setSearch: (state, action) => {
+      state.search = action.payload;
+    },
+    setCategoryFilter: (state, action) => {
+      state.category = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -148,5 +156,15 @@ const swapsSlice = createSlice({
   },
 });
 
-export const { clearSwapStatus } = swapsSlice.actions;
+export const { clearSwapStatus, setSearch, setCategoryFilter } = swapsSlice.actions;
+
+export const selectFilteredSwaps = (state) => {
+  const { swaps, search, category } = state.swaps;
+  return swaps.filter((swap) => {
+    const matchesSearch = swap.title?.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = category ? swap.category === category : true;
+    return matchesSearch && matchesCategory;
+  })
+}
+
 export default swapsSlice.reducer;
