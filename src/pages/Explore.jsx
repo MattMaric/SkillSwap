@@ -1,14 +1,7 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchSwaps } from "../features/swaps/swapsSlice";
+import { useSelector } from "react-redux";
 
 const Explore = () => {
-  const dispatch = useDispatch();
   const { swaps, loading, error } = useSelector((state) => state.swaps);
-
-  useEffect(() => {
-    dispatch(fetchSwaps());
-  }, [dispatch]);
 
   if (loading) return <div>Loading...</div>
   if (error) return <div className="alert alert-danger">{error}</div>
