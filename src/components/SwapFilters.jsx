@@ -1,11 +1,11 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearch, setCategoryFilter } from "../features/swaps/swapsSlice";
+import { setSearch, setCategoryFilter, setSortOption } from "../features/swaps/swapsSlice";
 
 const SwapFilters = () => {
   const dispatch = useDispatch();
   const search = useSelector((state) => state.swaps.search);
   const category = useSelector((state) => state.swaps.category);
+  const sortOption = useSelector((state) => state.swaps.sortOption);
 
   const handleSearchChange = (e) => {
     dispatch(setSearch(e.target.value));
@@ -14,6 +14,10 @@ const SwapFilters = () => {
   const handleCategoryChange = (e) => {
     dispatch(setCategoryFilter(e.target.value));
   };
+
+  const handleSortChange = (e) => {
+    dispatch(setSortOption(e.target.value));
+  }
 
   return (
     <div className="mb-4 d-flex flex-column flex-md-row align-items-md-end gap-3">
@@ -41,6 +45,19 @@ const SwapFilters = () => {
           <option value="books">Books</option>
           <option value="electronics">Electronics</option>
           <option value="fashion">Fashion</option>
+        </select>
+      </div>
+
+      <div className="mb-2">
+        <label htmlFor="sort" className="form-label">Sort by:</label>
+        <select
+          id="sort"
+          className="form-select"
+          value={sortOption}
+          onChange={handleSortChange}
+        >
+          <option value="title-asc">Title (A-Z)</option>
+          <option value="title-desc">Title (Z-A)</option>
         </select>
       </div>
     </div>
