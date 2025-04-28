@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteSwap } from "../features/swaps/swapsSlice";
 import { Link } from "react-router-dom";
@@ -5,8 +6,10 @@ import { selectFilteredSwaps } from "../features/swaps/swapsSlice";
 import SwapFilters from "../components/SwapFilters";
 
 const MySwaps = () => {
-  const user = useSelector((state) => state.auth.user);
+  const [currentPage, setCurrentPage] = useState(1);
+  const swapsPerPage = 6;
 
+  const user = useSelector((state) => state.auth.user);
   // Temporarily disable user filter for testing
   // const swaps = useSelector((state) => 
   //   selectFilteredSwaps(state).filter((swap) => swap.userId === user?.id)
@@ -14,9 +17,7 @@ const MySwaps = () => {
 
   // Remove this after testing
   const swaps = useSelector(selectFilteredSwaps);
-
   const { loading } = useSelector((state) => state.swaps);
-
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
@@ -24,7 +25,26 @@ const MySwaps = () => {
     if (confirmed) {
       dispatch(deleteSwap(id));
     }
-  }
+  };
+
+  // Calculate indexes (for pagination)
+  const indexOfLastSwap = currentPage * swapsPerPage;
+  const indexOfFirstSwap = indexOfLastSwap - swapsPerPage;
+  const currentSwaps = swaps.slice(indexOfFirstSwap, indexOfLastSwap);
+
+  const totalPages = Math.ceil(swaps.length / swapsPerPage);
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1)
+    }
+  };
 
   return (
     <div className="container mt-5">
@@ -32,11 +52,11 @@ const MySwaps = () => {
 
       <SwapFilters />
 
-      {swaps.length === 0 ? (
+      {currentSwaps.length === 0 ? (
         <p>You haven't created any swaps yet.</p>
       ) : (
         <div className="row">
-          {swaps.map((swap) => (
+          {currentSwaps.map((swap) => (
             <div className="col-md-4 mb-4" key={swap.id}>
               <div className="card h-100">
                 {swap.imageUrl && (
@@ -62,6 +82,27 @@ const MySwaps = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Pagination controls */}
+      {swaps.length > swapsPerPage && (
+        <div className="d-flex justify-content-center mt-4">
+          <button
+            className="btn btn-outline-primary me-2"
+            onClick={handlePrev}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="align-self-center">{currentPage} / {totalPages}</span>
+          <button
+            className="btn btn-outline-primary ms-2"
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
         </div>
       )}
     </div>
