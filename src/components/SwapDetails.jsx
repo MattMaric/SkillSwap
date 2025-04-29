@@ -7,7 +7,7 @@ const SwapDetails = () => {
   const swaps = useSelector((state) => state.swaps.swaps);
 
   // Find the swap by ID
-  const swap = swap.find((swap) => swap.id === id);
+  const swap = swaps.find((swap) => swap.id.toString() === id);
 
   if (!swap) {
     return <div className="container mt-5"><h2>Swap not found</h2></div>
@@ -17,7 +17,8 @@ const SwapDetails = () => {
     <div className="container mt-5">
       <h2>{swap.title}</h2>
       {swap.imageUrl && <img src={swap.imageUrl} alt={swap.title} className="img-fluid mb-3" />}
-      <p>{swap.description}</p>
+      {/* Change to swap.description later */}
+      <p>{swap.body}</p>
       <span className="badge bg-secondary">{swap.category}</span>
     </div>
   );
