@@ -60,7 +60,7 @@ const MySwaps = () => {
           {currentSwaps.map((swap) => (
             <div className="col-md-4 mb-4" key={swap.id}>
               <div 
-                className="card h-100"
+                className="card h-100 hover-shadow"
                 onClick={() => navigate(`/swaps/${swap.id}`)}
                 style={{ cursor: "pointer" }}
               >
