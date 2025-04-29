@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteSwap } from "../features/swaps/swapsSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { selectFilteredSwaps } from "../features/swaps/swapsSlice";
 import SwapFilters from "../components/SwapFilters";
 
@@ -19,6 +19,7 @@ const MySwaps = () => {
   const swaps = useSelector(selectFilteredSwaps);
   const { loading } = useSelector((state) => state.swaps);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleDelete = (id) => {
     const confirmed = window.confirm("Are you sure you want to delete this swap?");
@@ -58,7 +59,11 @@ const MySwaps = () => {
         <div className="row">
           {currentSwaps.map((swap) => (
             <div className="col-md-4 mb-4" key={swap.id}>
-              <div className="card h-100">
+              <div 
+                className="card h-100 hover-shadow"
+                onClick={() => navigate(`/swaps/${swap.id}`)}
+                style={{ cursor: "pointer" }}
+              >
                 {swap.imageUrl && (
                   <img src={swap.imageUrl} className="card-image-top" alt={swap.title} />
                 )}
