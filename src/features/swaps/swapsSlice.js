@@ -29,7 +29,7 @@ export const fetchSwaps = createAsyncThunk(
       const response = await fetch('https://jsonplaceholder.typicode.com/posts');
       if (!response.ok) throw new Error("Failed to fetch swaps");
       const data = await response.json();
-      return data.slice(0, 10); // limit the mock
+      return data.slice(0, 10).map(swap => ({ ...swap, isFavorite: swap.isFavorite ?? false })); // limit the mock
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -103,7 +103,13 @@ const swapsSlice = createSlice({
     },
     setSortOption: (state, action) => {
       state.sortOption = action.payload;
-    }
+    },
+    toggleFavorite: (state, action) => {
+      const swap = state.swaps.find((s) => s.id === action.payload);
+      if (swap) {
+        swap.isFavorite = !swap.isFavorite;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -160,7 +166,7 @@ const swapsSlice = createSlice({
   },
 });
 
-export const { clearSwapStatus, setSearch, setCategoryFilter, setSortOption } = swapsSlice.actions;
+export const { clearSwapStatus, setSearch, setCategoryFilter, setSortOption, toggleFavorite } = swapsSlice.actions;
 
 export const selectFilteredSwaps = (state) => {
   const { swaps, search, category, sortOption } = state.swaps;
