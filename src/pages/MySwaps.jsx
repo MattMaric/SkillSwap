@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteSwap } from "../features/swaps/swapsSlice";
+import { deleteSwap, selectFilteredSwaps, toggleFavorite } from "../features/swaps/swapsSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { selectFilteredSwaps } from "../features/swaps/swapsSlice";
 import SwapFilters from "../components/SwapFilters";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
 
 const MySwaps = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,17 +63,37 @@ const MySwaps = () => {
             <div className="col-md-4 mb-4" key={swap.id}>
               <div 
                 className="card h-100 hover-shadow"
-                onClick={() => navigate(`/swaps/${swap.id}`)}
                 style={{ cursor: "pointer" }}
               >
                 {swap.imageUrl && (
-                  <img src={swap.imageUrl} className="card-image-top" alt={swap.title} />
+                  <img 
+                    src={swap.imageUrl} 
+                    className="card-image-top" 
+                    alt={swap.title} 
+                    onClick={() => navigate(`/swaps/${swap.id}`)}
+                  />
                 )}
                 <div className="card-body">
-                  <h5 className="card-title">{swap.title}</h5>
+                  <h5 
+                    className="card-title"
+                    onClick={() => navigate(`/swaps/${swap.id}`)}
+                  >
+                    {swap.title}
+                  </h5>
                   <p className="card-text">{swap.description}</p>
                   <span className="badge bg-secondary">{swap.category}</span>
                     <div className="mt-4">
+                      <button
+                        className="btn btn-sm border-0 bg-transparent"
+                        onClick={() => {dispatch(toggleFavorite(swap.id))}}
+                        title="Toggle favorite"
+                        aria-label="Toggle favorite"
+                      >
+                        <FontAwesomeIcon 
+                          icon={swap.isFavorite ? solidHeart : regularHeart}
+                          style={{ color: "red", fontSize: "1.25rem" }}
+                        />
+                      </button>
                       <Link to={`/swaps/edit/${swap.id}`} className="btn btn-sm btn-warning me-2">
                         Edit
                       </Link>
