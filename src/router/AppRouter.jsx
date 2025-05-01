@@ -11,6 +11,7 @@ import PrivateRoute from '../components/PrivateRoute';
 import NewSwap from '../pages/NewSwap';
 import EditSwap from '../pages/EditSwap';
 import SwapDetails from '../components/SwapDetails';
+import FavoriteSwaps from '../pages/FavoriteSwaps';
 
 const AppRouter = () => {
   return (
@@ -45,6 +46,7 @@ const AppRouter = () => {
           />
           <Route path="/swaps/edit/:id" element={<EditSwap />} />
           <Route path="/swaps/:id" element={<SwapDetails />} />
+          <Route path="/favorites" element={<FavoriteSwaps />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
