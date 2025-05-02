@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import '../../styles/navbar.css';
 
 const Navbar = () => {
@@ -21,6 +21,11 @@ const Navbar = () => {
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" to="/profile">Profile</NavLink>
+          </li>
+          <li className="nav-item text-center">
+            <Link className="btn btn-primary text-white ms-2" to="/new-swap">
+              + Create Swap
+            </Link>
           </li>
         </ul>
       </div>
