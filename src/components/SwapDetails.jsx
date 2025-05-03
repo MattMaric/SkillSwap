@@ -48,7 +48,11 @@ const SwapDetails = () => {
         {swap.comments && swap.comments.length > 0 ? (
           <ul className="list-group mb-3">
             {swap.comments.map((comment, index) => (
-              <li key={index} className="list-group-item">
+              <li 
+                key={index} 
+                className="list-group-item mb-2" 
+                style={{borderRadius: "5px", border: "1px solid #dee2e6"}}
+              >
                 {comment}
               </li>
             ))}
