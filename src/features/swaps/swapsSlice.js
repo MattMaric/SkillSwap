@@ -110,6 +110,16 @@ const swapsSlice = createSlice({
         swap.isFavorite = !swap.isFavorite;
       }
     },
+    addComment: (state, action) => {
+      const { swapId, comment } = action.payload;
+      const swap = state.swaps.find((s) => s.id === swapId);
+      if (swap) {
+        if (!swap.comments) {
+          swap.comments = [];
+        }
+        swap.comments.push(comment);
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -166,7 +176,7 @@ const swapsSlice = createSlice({
   },
 });
 
-export const { clearSwapStatus, setSearch, setCategoryFilter, setSortOption, toggleFavorite } = swapsSlice.actions;
+export const { clearSwapStatus, setSearch, setCategoryFilter, setSortOption, toggleFavorite, addComment } = swapsSlice.actions;
 
 export const selectFilteredSwaps = (state) => {
   const { swaps, search, category, sortOption } = state.swaps;
