@@ -6,7 +6,7 @@ export const createSwap = createAsyncThunk(
   async (swapData, { rejectWithValue }) => {
     try {
       // replace with real API later
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      const response = await fetch('http://localhost:5000/swaps', {
         method: "POST",
         body: JSON.stringify(swapData),
         headers: { "Content-Type": "application/json" },
@@ -26,7 +26,7 @@ export const fetchSwaps = createAsyncThunk(
   "swaps/fetchSwaps",
   async(_, {rejectWithValue}) => {
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+      const response = await fetch('http://localhost:5000/swaps');
       if (!response.ok) throw new Error("Failed to fetch swaps");
       const data = await response.json();
       return data.slice(0, 10).map(swap => ({ ...swap, isFavorite: swap.isFavorite ?? false })); // limit the mock
@@ -42,7 +42,7 @@ export const deleteSwap = createAsyncThunk(
   async (swapId, { rejectWithValue }) => {
     try {
       // Replace with real API later
-      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${swapId}`, {
+      const response = await fetch(`http://localhost:5000/swaps/${swapId}`, {
         method: "DELETE",
       });
 
@@ -61,7 +61,7 @@ export const editSwap = createAsyncThunk(
   async ({ id, updatedData }, { rejectWithValue }) => {
     try {
       // Replace with real API later
-      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+      const response = await fetch(`http://localhost:5000/swaps/${id}`, {
         method: "PUT",
         body: JSON.stringify(updatedData),
         headers: {
