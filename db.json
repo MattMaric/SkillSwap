@@ -1,7 +1,7 @@
 {
   "swaps": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Vintage Camera for trade",
       "description": "Looking to swap my vintage film camera for a modern DSLR.",
       "category": "Electronics",
@@ -9,7 +9,7 @@
       "isFavorite": false
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Mountain Bike Exchange",
       "description": "Trade my mountain bike for a road bike.",
       "category": "Sports",
@@ -19,15 +19,27 @@
   ],
   "comments": [
     {
-      "id": 1,
+      "id": "1",
       "swapId": 1,
       "author": "John Doe",
       "text": "I'm interested! Can you share more details?"
+    },
+    {
+      "id": "7275",
+      "swapId": "2",
+      "author": "User",
+      "text": "Test 1"
+    },
+    {
+      "id": "d894",
+      "swapId": "1",
+      "author": "User",
+      "text": "Test 2"
     }
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "username": "johndoe",
       "email": "john@example.com"
     }
