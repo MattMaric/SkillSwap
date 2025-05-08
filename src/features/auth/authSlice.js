@@ -5,13 +5,20 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, thunkAPI) => {
     try {
-      // Fake delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const res = await fetch(`http://localhost:5000/users?email=${email}`);
+      if (!res.ok) throw new Error("Failed to fetch users");
 
-      if (email === "user@example.com" && password === "password") {
-        return { email }
-      } else {
+      const users = await res.json();
+      const user = users.find((u) => u.password === password);
+
+      if (!user) {
         return thunkAPI.rejectWithValue("Invalid email or password");
+      }
+
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
       }
     } catch (err) {
       return thunkAPI.rejectWithValue("Something went wrong");
