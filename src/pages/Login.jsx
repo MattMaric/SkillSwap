@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -59,6 +59,10 @@ const Login = () => {
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
+
+      <p className="mt-3 text-center">
+        Don't have an account? <Link to="/signup">Sign up</Link>
+      </p>
     </div>
   )
 

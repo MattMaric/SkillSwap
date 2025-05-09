@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -71,6 +71,11 @@ const SignUp = () => {
           {loading ? "Signing up..." : "Sign Up"}
         </button>
       </form>
+
+      <p className="mt-3 text-center">
+        Already have an account? <Link to="/login">Log in</Link>
+      </p>
+
     </div>
   );
 };
