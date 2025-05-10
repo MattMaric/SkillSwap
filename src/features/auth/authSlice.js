@@ -47,6 +47,10 @@ export const registerUser = createAsyncThunk(
       if (!res.ok) throw new Error("Failed to register");
 
       const newUser = await res.json();
+
+      // Auto-login
+      await thunkAPI.dispatch(loginUser({ name, email, password }));
+
       return newUser;
     } catch (err) {
       return rejectWithValue(err.message || "Something went wrong");
