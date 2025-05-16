@@ -35,11 +35,17 @@
       "swapId": "1",
       "author": "User",
       "text": "Test 2"
+    },
+    {
+      "id": "af13",
+      "swapId": "2",
+      "author": "John",
+      "text": "Nice bike!"
     }
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "John",
       "email": "user@example.com",
       "password": "password"

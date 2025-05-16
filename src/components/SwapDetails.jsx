@@ -9,6 +9,8 @@ const SwapDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const user = useSelector(state => state.auth.user);
+
   const swaps = useSelector((state) => state.swaps.swaps);
   // Find the swap by ID
   const swap = swaps.find((swap) => swap.id.toString() === id);
@@ -27,7 +29,7 @@ const SwapDetails = () => {
     e.preventDefault();
     if (!commentText.trim()) return;
 
-    dispatch(postComment({ swapId: swap.id, author: "User", text: commentText }));
+    dispatch(postComment({ swapId: swap.id, author: user?.name || "Anonymous", text: commentText }));
     setCommentText("");
   }
 
