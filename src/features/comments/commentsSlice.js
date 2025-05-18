@@ -34,6 +34,24 @@ export const postComment = createAsyncThunk(
   }
 );
 
+// Async thunk for deleting comment
+export const deleteComment = createAsyncThunk(
+  "comments/deleteComment",
+  async (commentId, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`http://localhost:5000/comments/${commentId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete comment");
+
+      return commentId;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 const commentsSlice = createSlice({
   name: "comments",
   initialState: {
@@ -58,7 +76,10 @@ const commentsSlice = createSlice({
       })
       .addCase(postComment.fulfilled, (state, action) => {
         state.comments.push(action.payload);
-      });
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.comments = state.comments.filter(c => c.id !== action.payload);
+      })
   },
 });
 
