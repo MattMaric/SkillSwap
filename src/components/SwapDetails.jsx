@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { postComment, fetchComments } from "../features/comments/commentsSlice";
+import { postComment, fetchComments, deleteComment } from "../features/comments/commentsSlice";
 
 const SwapDetails = () => {
   const [commentText, setCommentText] = useState("");
@@ -33,6 +33,10 @@ const SwapDetails = () => {
     setCommentText("");
   }
 
+  const handleDelete = (commentId) => {
+    dispatch(deleteComment(commentId));
+  }
+
   if (!swap) {
     return <div className="container mt-5"><h2>Swap not found</h2></div>
   }
@@ -57,11 +61,19 @@ const SwapDetails = () => {
         <h4>Comments</h4>
 
         {comments && comments.length > 0 ? (
-          comments.map((comment, index) => (
-            <div className="card mb-3" key={index}>
-              <div className="card-body">
-                <h6 className="card-title mb-1">{comment.author}</h6>
+          comments.map((comment) => (
+            <div className="card mb-3" key={comment.id}>
+              <div className="card-body position-relative">
+                <h6 className="card-title mb-3">{comment.author}</h6>
                 <p className="card-text mb-0">{comment.text}</p>
+                {user?.name === comment.author && (
+                  <button
+                  className="btn btn-sm btn-danger position-absolute top-0 end-0 mt-2 me-2 fw-bold"
+                    onClick={() => handleDelete(comment.id)}
+                  >
+                    X
+                  </button>
+                )}
               </div>
             </div>
             ))
