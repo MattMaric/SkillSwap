@@ -82,21 +82,26 @@ const SwapDetails = () => {
           )
         }
 
-        <form onSubmit={handleAddComment}>
-          <div className="mb-3">
-            <textarea 
-              className="form-control"
-              rows="3"
-              placeholder="Write your comment..."
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Submit Comment
-          </button>
-        </form>
+        {user ? (
+          <form onSubmit={handleAddComment}>
+            <div className="mb-3">
+              <textarea 
+                className="form-control"
+                rows="3"
+                placeholder="Write your comment..."
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Submit Comment
+            </button>
+          </form>
+        ) : (
+          <p className="text-muted">Please log in to write a comment.</p>
+        )}
+
       </div>
     </>
   );
