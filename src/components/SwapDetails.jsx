@@ -61,7 +61,7 @@ const SwapDetails = () => {
         <h4>Comments</h4>
 
         {comments && comments.length > 0 ? (
-          comments.map((comment) => (
+          [...comments].reverse().map((comment) => (
             <div className="card mb-3" key={comment.id}>
               <div className="card-body position-relative">
                 <h6 className="card-title mb-3">{comment.author}</h6>
