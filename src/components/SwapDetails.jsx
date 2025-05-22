@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { postComment, fetchComments, deleteComment } from "../features/comments/commentsSlice";
 
 const SwapDetails = () => {
   const [commentText, setCommentText] = useState("");
+
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const commentInputRef = useRef(null);
+
   const user = useSelector(state => state.auth.user);
-
   const swaps = useSelector((state) => state.swaps.swaps);
-  // Find the swap by ID
-  const swap = swaps.find((swap) => swap.id.toString() === id);
-
   const comments = useSelector(state => 
     state.comments.comments.filter(c => c.swapId.toString() === id)
   );
+
+  // Find the swap by ID
+  const swap = swaps.find((swap) => swap.id.toString() === id);
 
   useEffect(() => {
     if (swap) {
@@ -25,11 +27,20 @@ const SwapDetails = () => {
     }
   }, [dispatch, swap]);
 
+  useEffect(() => {
+    commentInputRef.current?.focus();
+  }, []);
+
   const handleAddComment = (e) => {
     e.preventDefault();
     if (!commentText.trim()) return;
 
-    dispatch(postComment({ swapId: swap.id, author: user?.name || "Anonymous", text: commentText }));
+    dispatch(postComment({ 
+      swapId: swap.id, 
+      author: user?.name || "Anonymous", 
+      text: commentText 
+    }));
+    
     setCommentText("");
   }
 
@@ -61,7 +72,7 @@ const SwapDetails = () => {
         <h4>Comments</h4>
 
         {comments && comments.length > 0 ? (
-          comments.map((comment) => (
+          [...comments].reverse().map((comment) => (
             <div className="card mb-3" key={comment.id}>
               <div className="card-body position-relative">
                 <h6 className="card-title mb-3">{comment.author}</h6>
@@ -82,21 +93,27 @@ const SwapDetails = () => {
           )
         }
 
-        <form onSubmit={handleAddComment}>
-          <div className="mb-3">
-            <textarea 
-              className="form-control"
-              rows="3"
-              placeholder="Write your comment..."
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Submit Comment
-          </button>
-        </form>
+        {user ? (
+          <form onSubmit={handleAddComment}>
+            <div className="mb-3">
+              <textarea 
+                ref={commentInputRef}
+                className="form-control"
+                rows="3"
+                placeholder="Write your comment..."
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Submit Comment
+            </button>
+          </form>
+        ) : (
+          <p className="text-muted">Please log in to write a comment.</p>
+        )}
+
       </div>
     </>
   );
