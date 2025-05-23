@@ -52,6 +52,29 @@ export const deleteComment = createAsyncThunk(
   }
 );
 
+// Async thunk for editing comment
+export const editComment = createAsyncThunk(
+  "comments/editComment",
+  async ({ id, updatedText }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`http://localhost:5000/comments/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: updatedText }),
+      });
+
+      if (!response.ok) throw new Error("Failed to edit comment");
+
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+)
+
 const commentsSlice = createSlice({
   name: "comments",
   initialState: {
@@ -79,6 +102,12 @@ const commentsSlice = createSlice({
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
         state.comments = state.comments.filter(c => c.id !== action.payload);
+      })
+      .addCase(editComment.fulfilled, (state, action) => {
+        const index = state.comments.findIndex((c) => c.id === action.payload.id);
+        if (index !== -1) {
+          state.comments[index] = action.payload;
+        }
       })
   },
 });
