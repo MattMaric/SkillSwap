@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { postComment, fetchComments, deleteComment } from "../features/comments/commentsSlice";
+import { postComment, fetchComments, deleteComment, editComment } from "../features/comments/commentsSlice";
 
 const SwapDetails = () => {
   const [commentText, setCommentText] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editedText, setEditedText] = useState("");
 
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -42,15 +44,32 @@ const SwapDetails = () => {
     }));
     
     setCommentText("");
-  }
+  };
 
   const handleDelete = (commentId) => {
     dispatch(deleteComment(commentId));
-  }
+  };
+
+  const handleEditInit = (comment) => {
+    setEditingId(comment.id);
+    setEditedText(comment.text);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditedText("");
+  };
+
+  const handleEditSave = (id) => {
+    if (!editedText.trim()) return;
+    dispatch(editComment({ id, updatedText: editedText }));
+    setEditingId(null);
+    setEditedText("");
+  };
 
   if (!swap) {
     return <div className="container mt-5"><h2>Swap not found</h2></div>
-  }
+  };
 
   return (
     <>
