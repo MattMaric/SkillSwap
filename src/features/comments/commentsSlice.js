@@ -75,6 +75,30 @@ export const editComment = createAsyncThunk(
   }
 )
 
+// Async thunk for liking comment
+export const likeComment = createAsyncThunk(
+  "comments/likeComment",
+  async (commentId, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState();
+      const comment = state.comments.comments.find(c => c.id === commentId);
+      const updatedComment = { ...comment, likes: comment.likes + 1};
+
+      const res = await fetch(`http://localhost:5000/comments/${commentId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ likes: updatedComment.likes }),
+      });
+
+      if (!res.ok) throw new Error("Failed to like comment");
+
+      return updatedComment;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
 const commentsSlice = createSlice({
   name: "comments",
   initialState: {
@@ -105,6 +129,12 @@ const commentsSlice = createSlice({
       })
       .addCase(editComment.fulfilled, (state, action) => {
         const index = state.comments.findIndex((c) => c.id === action.payload.id);
+        if (index !== -1) {
+          state.comments[index] = action.payload;
+        }
+      })
+      .addCase(likeComment.fulfilled, (state, action) => {
+        const index = state.comments.findIndex(c => c.id === action.payload.id);
         if (index !== -1) {
           state.comments[index] = action.payload;
         }
