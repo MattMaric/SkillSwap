@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { postComment, fetchComments, deleteComment, editComment } from "../features/comments/commentsSlice";
+import {
+  postComment,
+  fetchComments,
+  deleteComment,
+  editComment,
+  likeComment,
+} from "../features/comments/commentsSlice";
 
 const SwapDetails = () => {
   const [commentText, setCommentText] = useState("");
@@ -14,10 +20,10 @@ const SwapDetails = () => {
 
   const commentInputRef = useRef(null);
 
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const swaps = useSelector((state) => state.swaps.swaps);
-  const comments = useSelector(state => 
-    state.comments.comments.filter(c => c.swapId.toString() === id)
+  const comments = useSelector((state) =>
+    state.comments.comments.filter((c) => c.swapId.toString() === id)
   );
 
   // Find the swap by ID
@@ -37,12 +43,15 @@ const SwapDetails = () => {
     e.preventDefault();
     if (!commentText.trim()) return;
 
-    dispatch(postComment({ 
-      swapId: swap.id, 
-      author: user?.name || "Anonymous", 
-      text: commentText 
-    }));
-    
+    dispatch(
+      postComment({
+        swapId: swap.id,
+        author: user?.name || "Anonymous",
+        text: commentText,
+        likes: [],
+      })
+    );
+
     setCommentText("");
   };
 
@@ -68,24 +77,31 @@ const SwapDetails = () => {
   };
 
   if (!swap) {
-    return <div className="container mt-5"><h2>Swap not found</h2></div>
-  };
+    return (
+      <div className="container mt-5">
+        <h2>Swap not found</h2>
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="container mt-5">
-        <button
-          onClick={() => navigate(-1)}
-          className="btn btn-secondary mb-4"
-        >
+        <button onClick={() => navigate(-1)} className="btn btn-secondary mb-4">
           &larr; Back
         </button>
         <h2>{swap.title}</h2>
-        {swap.imageUrl && <img src={swap.imageUrl} alt={swap.title} className="img-fluid mb-3" />}
+        {swap.imageUrl && (
+          <img
+            src={swap.imageUrl}
+            alt={swap.title}
+            className="img-fluid mb-3"
+          />
+        )}
         <p>{swap.description}</p>
         <span className="badge bg-secondary">{swap.category}</span>
       </div>
-      
+
       {/* Comments Section */}
       <div className="container mt-5">
         <h4>Comments</h4>
@@ -102,7 +118,7 @@ const SwapDetails = () => {
 
                   {isEditing ? (
                     <>
-                      <textarea 
+                      <textarea
                         className="form-control mb-2"
                         value={editedText}
                         onChange={(e) => setEditedText(e.target.value)}
@@ -123,23 +139,53 @@ const SwapDetails = () => {
                   ) : (
                     <>
                       <p className="card-text mb-0">{comment.text}</p>
-                      {isAuthor && (
-                        <div className="position-absolute top-0 end-0 mt-2 me-2 d-flex gap-1">
-                          <button
-                            className="btn btn-sm btn-warning fw-bold"
-                            onClick={() => handleEditInit(comment)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="btn btn-sm btn-danger fw-bold"
-                            onClick={() => handleDelete(comment.id)}
-                          >
-                            X
-                          </button>
-                        </div>
-                      )}
+
+                      <div className="d-flex justify-content-between align-items-center mt-2">
+                        <button
+                          className="btn btn-sm btn-outline-primary"
+                          onClick={() => dispatch(likeComment(comment.id))}
+                        >
+                          👍 {comment.likes}
+                        </button>
+
+                        {isAuthor && (
+                          <div className="d-flex gap-1">
+                            <button
+                              className="btn btn-sm btn-warning fw-bold"
+                              onClick={() => handleEditInit(comment)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="btn btn-sm btn-danger fw-bold"
+                              onClick={() => handleDelete(comment.id)}
+                            >
+                              X
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </>
+
+                    // <>
+                    //   <p className="card-text mb-0">{comment.text}</p>
+                    //   {isAuthor && (
+                    //     <div className="position-absolute top-0 end-0 mt-2 me-2 d-flex gap-1">
+                    //       <button
+                    //         className="btn btn-sm btn-warning fw-bold"
+                    //         onClick={() => handleEditInit(comment)}
+                    //       >
+                    //         Edit
+                    //       </button>
+                    //       <button
+                    //         className="btn btn-sm btn-danger fw-bold"
+                    //         onClick={() => handleDelete(comment.id)}
+                    //       >
+                    //         X
+                    //       </button>
+                    //     </div>
+                    //   )}
+                    // </>
                   )}
                 </div>
               </div>
@@ -152,7 +198,7 @@ const SwapDetails = () => {
         {user ? (
           <form onSubmit={handleAddComment}>
             <div className="mb-3">
-              <textarea 
+              <textarea
                 ref={commentInputRef}
                 className="form-control"
                 rows="3"
@@ -169,7 +215,6 @@ const SwapDetails = () => {
         ) : (
           <p className="text-muted">Please log in to write a comment.</p>
         )}
-
       </div>
     </>
   );

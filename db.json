@@ -23,28 +23,28 @@
       "swapId": 1,
       "author": "John Doe",
       "text": "I'm interested! Can you share more details?",
-      "likes": 0
+      "likes": []
     },
     {
       "id": "7275",
       "swapId": "2",
       "author": "User",
       "text": "Test 1",
-      "likes": 0
+      "likes": []
     },
     {
       "id": "d894",
       "swapId": "1",
       "author": "User",
       "text": "Test 2",
-      "likes": 0
+      "likes": []
     },
     {
       "id": "af13",
       "swapId": "2",
       "author": "John",
       "text": "Nice bike!",
-      "likes": 0
+      "likes": []
     }
   ],
   "users": [
