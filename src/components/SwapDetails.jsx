@@ -49,6 +49,7 @@ const SwapDetails = () => {
         author: user?.name || "Anonymous",
         text: commentText,
         likes: [],
+        timestamp: new Date().toISOString(),
       })
     );
 
@@ -115,7 +116,10 @@ const SwapDetails = () => {
             return (
               <div className="card mb-3" key={comment.id}>
                 <div className="card-body position-relative">
-                  <h6 className="card-title mb-3">{comment.author}</h6>
+                  <h6 className="card-title">{comment.author}</h6>
+                  <small className="text-muted">
+                    {new Date(comment.timestamp).toLocaleString()}
+                  </small>
 
                   {isEditing ? (
                     <>
@@ -139,7 +143,7 @@ const SwapDetails = () => {
                     </>
                   ) : (
                     <>
-                      <p className="card-text mb-0">{comment.text}</p>
+                      <p className="card-text mt-3 mb-0">{comment.text}</p>
 
                       <div className="d-flex justify-content-between align-items-center mt-2">
                         {user && (
