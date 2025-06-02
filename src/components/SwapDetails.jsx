@@ -110,6 +110,7 @@ const SwapDetails = () => {
           [...comments].reverse().map((comment) => {
             const isAuthor = user?.name === comment.author;
             const isEditing = editingId === comment.id;
+            const isLiked = comment.likes.includes(user.email);
 
             return (
               <div className="card mb-3" key={comment.id}>
@@ -142,10 +143,19 @@ const SwapDetails = () => {
 
                       <div className="d-flex justify-content-between align-items-center mt-2">
                         <button
-                          className="btn btn-sm btn-outline-primary"
-                          onClick={() => dispatch(likeComment(comment.id))}
+                          className={`btn btn-sm fw-bold ${
+                            isLiked ? "btn-primary" : "btn-outline-primary"
+                          }`}
+                          onClick={() =>
+                            dispatch(
+                              likeComment({
+                                commentId: comment.id,
+                                userEmail: user.email,
+                              })
+                            )
+                          }
                         >
-                          👍 {comment.likes}
+                          👍 {comment.likes.length}
                         </button>
 
                         {isAuthor && (
@@ -166,26 +176,6 @@ const SwapDetails = () => {
                         )}
                       </div>
                     </>
-
-                    // <>
-                    //   <p className="card-text mb-0">{comment.text}</p>
-                    //   {isAuthor && (
-                    //     <div className="position-absolute top-0 end-0 mt-2 me-2 d-flex gap-1">
-                    //       <button
-                    //         className="btn btn-sm btn-warning fw-bold"
-                    //         onClick={() => handleEditInit(comment)}
-                    //       >
-                    //         Edit
-                    //       </button>
-                    //       <button
-                    //         className="btn btn-sm btn-danger fw-bold"
-                    //         onClick={() => handleDelete(comment.id)}
-                    //       >
-                    //         X
-                    //       </button>
-                    //     </div>
-                    //   )}
-                    // </>
                   )}
                 </div>
               </div>
