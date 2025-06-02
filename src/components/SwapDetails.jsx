@@ -142,21 +142,23 @@ const SwapDetails = () => {
                       <p className="card-text mb-0">{comment.text}</p>
 
                       <div className="d-flex justify-content-between align-items-center mt-2">
-                        <button
-                          className={`btn btn-sm fw-bold ${
-                            isLiked ? "btn-primary" : "btn-outline-primary"
-                          }`}
-                          onClick={() =>
-                            dispatch(
-                              likeComment({
-                                commentId: comment.id,
-                                userEmail: user.email,
-                              })
-                            )
-                          }
-                        >
-                          👍 {comment.likes.length}
-                        </button>
+                        {user && (
+                          <button
+                            className={`btn btn-sm fw-bold ${
+                              isLiked ? "btn-primary" : "btn-outline-primary"
+                            }`}
+                            onClick={() =>
+                              dispatch(
+                                likeComment({
+                                  commentId: comment.id,
+                                  userEmail: user.email,
+                                })
+                              )
+                            }
+                          >
+                            👍 {comment.likes.length}
+                          </button>
+                        )}
 
                         {isAuthor && (
                           <div className="d-flex gap-1">
