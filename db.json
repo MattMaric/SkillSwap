@@ -19,28 +19,12 @@
   ],
   "comments": [
     {
-      "id": "1",
-      "swapId": 1,
-      "author": "John Doe",
-      "text": "I'm interested! Can you share more details?"
-    },
-    {
-      "id": "7275",
-      "swapId": "2",
-      "author": "User",
-      "text": "Test 1"
-    },
-    {
-      "id": "d894",
-      "swapId": "1",
-      "author": "User",
-      "text": "Test 2"
-    },
-    {
-      "id": "af13",
+      "id": "9e1d",
       "swapId": "2",
       "author": "John",
-      "text": "Nice bike!"
+      "text": "Nice bike!",
+      "likes": [],
+      "timestamp": "2025-06-02T09:16:00.469Z"
     }
   ],
   "users": [
