@@ -64,7 +64,10 @@ export const editComment = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text: updatedText }),
+        body: JSON.stringify({
+          text: updatedText,
+          editedAt: new Date().toISOString(),
+        }),
       });
 
       if (!response.ok) throw new Error("Failed to edit comment");
