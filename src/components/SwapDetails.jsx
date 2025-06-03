@@ -131,6 +131,9 @@ const SwapDetails = () => {
                       <button
                         className="btn btn-sm btn-success me-2"
                         onClick={() => handleEditSave(comment.id)}
+                        disabled={
+                          !editedText.trim() || editedText === comment.text
+                        }
                       >
                         Save
                       </button>
@@ -144,6 +147,13 @@ const SwapDetails = () => {
                   ) : (
                     <>
                       <p className="card-text mt-3 mb-0">{comment.text}</p>
+                      {comment.editedAt && (
+                        <p className="text-muted small mb-0 mt-1">
+                          <em>
+                            edited {new Date(comment.editedAt).toLocaleString()}
+                          </em>
+                        </p>
+                      )}
 
                       <div className="d-flex justify-content-between align-items-center mt-2">
                         {user && (
