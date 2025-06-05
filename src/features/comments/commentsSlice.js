@@ -1,14 +1,30 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Async thunk for fetching comments
-export const fetchComments = createAsyncThunk(
-  "comments/fetchComments",
+// Async thunk for fetching comments by swap ID
+export const fetchCommentsBySwapId = createAsyncThunk(
+  "comments/fetchCommentsBySwapId",
   async (swapId, { rejectWithValue }) => {
     try {
       const response = await fetch(
         `http://localhost:5000/comments?swapId=${swapId}`
       );
       if (!response.ok) throw new Error("Failed to fetch comments");
+      return await response.json();
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Async thunk for fetching comments by user ID
+export const fetchCommentsByUser = createAsyncThunk(
+  "comments/fetchCommentsByUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/comments?userId=${userId}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch user comments");
       return await response.json();
     } catch (err) {
       return rejectWithValue(err.message);
@@ -121,45 +137,80 @@ export const likeComment = createAsyncThunk(
 const commentsSlice = createSlice({
   name: "comments",
   initialState: {
-    comments: [],
+    commentsBySwap: [],
+    commentsByUser: [],
     loading: false,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchComments.pending, (state) => {
+      // Comments by SwapId
+      .addCase(fetchCommentsBySwapId.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchComments.fulfilled, (state, action) => {
+      .addCase(fetchCommentsBySwapId.fulfilled, (state, action) => {
         state.loading = false;
-        state.comments = action.payload;
+        state.commentsBySwap = action.payload;
       })
-      .addCase(fetchComments.rejected, (state, action) => {
-        (state.loading = false), (state.error = action.payload);
+      .addCase(fetchCommentsBySwapId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
+
+      // Comments by UserId
+      .addCase(fetchCommentsByUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCommentsByUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.commentsByUser = action.payload;
+      })
+      .addCase(fetchCommentsByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Post Comment
       .addCase(postComment.fulfilled, (state, action) => {
-        state.comments.push(action.payload);
+        state.commentsBySwap.push(action.payload);
+        state.commentsByUser.push(action.payload);
       })
+
+      // Delete Comment
       .addCase(deleteComment.fulfilled, (state, action) => {
-        state.comments = state.comments.filter((c) => c.id !== action.payload);
+        state.commentsBySwap = state.commentsBySwap.filter(
+          (c) => c.id !== action.payload
+        );
+        state.commentsByUser = state.commentsByUser.filter(
+          (c) => c.id !== action.payload
+        );
       })
+
+      // Edit Comment
       .addCase(editComment.fulfilled, (state, action) => {
-        const index = state.comments.findIndex(
-          (c) => c.id === action.payload.id
-        );
-        if (index !== -1) {
-          state.comments[index] = action.payload;
-        }
+        const update = (arr) => {
+          const index = arr.findIndex((c) => c.id === action.payload.id);
+          if (index !== -1) {
+            arr[index] = action.payload;
+          }
+        };
+        update(state.commentsBySwap);
+        update(state.commentsByUser);
       })
+
+      // Like Comment
       .addCase(likeComment.fulfilled, (state, action) => {
-        const index = state.comments.findIndex(
-          (c) => c.id === action.payload.id
-        );
-        if (index !== -1) {
-          state.comments[index] = action.payload;
-        }
+        const update = (arr) => {
+          const index = arr.findIndex((c) => c.id === action.payload.id);
+          if (index !== -1) {
+            arr[index] = action.payload;
+          }
+        };
+        update(state.commentsBySwap);
+        update(state.commentsByUser);
       });
   },
 });
