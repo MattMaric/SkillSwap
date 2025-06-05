@@ -28,10 +28,11 @@ const NewSwap = () => {
   const validate = () => {
     const newErrors = {};
     if (!formData.title) newErrors.title = "Title is required";
-    if (!formData.description) newErrors.description = "Description is required";
+    if (!formData.description)
+      newErrors.description = "Description is required";
     if (!formData.category) newErrors.category = "Category is required";
     return newErrors;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,10 +44,13 @@ const NewSwap = () => {
       return;
     }
 
-    const resultAction = await dispatch(createSwap({
-      ...formData,
-      userId: user.id,
-    }));
+    const resultAction = await dispatch(
+      createSwap({
+        ...formData,
+        userId: user.id,
+        author: user.name,
+      })
+    );
   };
 
   useEffect(() => {
@@ -60,7 +64,7 @@ const NewSwap = () => {
   useEffect(() => {
     return () => {
       dispatch(clearSwapStatus());
-    }
+    };
   }, [dispatch]);
 
   return (
@@ -69,9 +73,7 @@ const NewSwap = () => {
       {success && (
         <div className="alert alert-success">Swap created successfully!</div>
       )}
-      {error && (
-        <div className="alert alert-danger">Error: {error}</div>
-      )}
+      {error && <div className="alert alert-danger">Error: {error}</div>}
       {Object.keys(errors).length > 0 && (
         <div className="alert alert-warning">
           Please fix the highlighted errors before submitting.
@@ -80,13 +82,15 @@ const NewSwap = () => {
       <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
           <label className="form-label">Title</label>
-          <input 
+          <input
             name="title"
             value={formData.title}
             onChange={handleChange}
             className={`form-control ${errors.title ? "is-invalid" : ""}`}
           />
-          {errors.title && <div className="invalid-feedback">{errors.title}</div>}
+          {errors.title && (
+            <div className="invalid-feedback">{errors.title}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -95,9 +99,11 @@ const NewSwap = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className={`form-control ${errors.description ? 'is-invalid' : ''}`}
+            className={`form-control ${errors.description ? "is-invalid" : ""}`}
           />
-          {errors.description && <div className="invalid-feedback">{errors.description}</div>}
+          {errors.description && (
+            <div className="invalid-feedback">{errors.description}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -113,12 +119,14 @@ const NewSwap = () => {
             <option value="electronics">Electronics</option>
             <option value="fashion">Fashion</option>
           </select>
-          {errors.category && <div className="invalid-feedback">{errors.category}</div>}
+          {errors.category && (
+            <div className="invalid-feedback">{errors.category}</div>
+          )}
         </div>
 
         <div className="mb-3">
           <label className="form-label">Image URL</label>
-          <input 
+          <input
             name="imageUrl"
             value={formData.imageUrl}
             onChange={handleChange}
@@ -127,14 +135,14 @@ const NewSwap = () => {
         </div>
         {formData.imageUrl && (
           <div className="my-3 text-center">
-            <img 
+            <img
               src={formData.imageUrl}
               alt="Swap Preview"
               style={{
                 maxWidth: "200px",
                 maxHeight: "200px",
                 objectFit: "cover",
-                borderRadius: "8px"
+                borderRadius: "8px",
               }}
             />
           </div>
@@ -152,7 +160,7 @@ const NewSwap = () => {
         )}
       </form>
     </div>
-  )
+  );
 };
 
 export default NewSwap;

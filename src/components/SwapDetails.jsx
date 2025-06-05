@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   postComment,
-  fetchComments,
+  fetchCommentsBySwapId,
   deleteComment,
   editComment,
   likeComment,
@@ -23,7 +23,7 @@ const SwapDetails = () => {
   const user = useSelector((state) => state.auth.user);
   const swaps = useSelector((state) => state.swaps.swaps);
   const comments = useSelector((state) =>
-    state.comments.comments.filter((c) => c.swapId.toString() === id)
+    state.comments.commentsBySwap.filter((c) => c.swapId.toString() === id)
   );
 
   // Find the swap by ID
@@ -31,7 +31,7 @@ const SwapDetails = () => {
 
   useEffect(() => {
     if (swap) {
-      dispatch(fetchComments(swap.id));
+      dispatch(fetchCommentsBySwapId(swap.id));
     }
   }, [dispatch, swap]);
 
