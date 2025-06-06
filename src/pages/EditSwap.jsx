@@ -8,8 +8,8 @@ const EditSwap = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const swap = useSelector((state) => 
-    state.swaps.swaps.find((swap) => swap.id.toString() === id)  
+  const swap = useSelector((state) =>
+    state.swaps.swaps.find((swap) => swap.id.toString() === id)
   );
 
   const [formData, setFormData] = useState({
@@ -40,10 +40,11 @@ const EditSwap = () => {
   const validate = () => {
     const newErrors = {};
     if (!formData.title) newErrors.title = "Title is required";
-    if (!formData.description) newErrors.description = "Description is required";
+    if (!formData.description)
+      newErrors.description = "Description is required";
     if (!formData.category) newErrors.category = "Category is required";
     return newErrors;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,7 +56,16 @@ const EditSwap = () => {
     }
 
     const resultAction = await dispatch(
-      editSwap({ id, updatedData: formData })
+      editSwap({
+        id,
+        updatedData: {
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          imageUrl: formData.imageUrl,
+          updatedAt: new Date().toISOString(),
+        },
+      })
     );
 
     if (editSwap.fulfilled.match(resultAction)) {
@@ -63,7 +73,7 @@ const EditSwap = () => {
     }
   };
 
-  if (!swap) return <div>Loading swap data...</div>
+  if (!swap) return <div>Loading swap data...</div>;
 
   return (
     <div className="container mt-5">
@@ -71,13 +81,15 @@ const EditSwap = () => {
       <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
           <label className="form-label">Title</label>
-          <input 
+          <input
             name="title"
             value={formData.title}
             onChange={handleChange}
             className={`form-control ${errors.title ? "is-invalid" : ""}`}
           />
-          {errors.title && <div className="invalid-feedback">{errors.title}</div>}
+          {errors.title && (
+            <div className="invalid-feedback">{errors.title}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -88,7 +100,9 @@ const EditSwap = () => {
             onChange={handleChange}
             className={`form-control ${errors.description ? "is-invalid" : ""}`}
           />
-          {errors.description && <div className="invalid-feedback">{errors.description}</div>}
+          {errors.description && (
+            <div className="invalid-feedback">{errors.description}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -104,7 +118,9 @@ const EditSwap = () => {
             <option value="electronics">Electronics</option>
             <option value="fashion">Fashion</option>
           </select>
-          {errors.category && <div className="invalid-feedback">{errors.category}</div>}
+          {errors.category && (
+            <div className="invalid-feedback">{errors.category}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -117,7 +133,9 @@ const EditSwap = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">Update Swap</button>
+        <button type="submit" className="btn btn-primary">
+          Update Swap
+        </button>
       </form>
     </div>
   );

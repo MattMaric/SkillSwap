@@ -6,7 +6,7 @@ export const createSwap = createAsyncThunk(
   async (swapData, { rejectWithValue }) => {
     try {
       // replace with real API later
-      const response = await fetch('http://localhost:5000/swaps', {
+      const response = await fetch("http://localhost:5000/swaps", {
         method: "POST",
         body: JSON.stringify(swapData),
         headers: { "Content-Type": "application/json" },
@@ -24,12 +24,14 @@ export const createSwap = createAsyncThunk(
 // Async thunk for fetching swaps
 export const fetchSwaps = createAsyncThunk(
   "swaps/fetchSwaps",
-  async(_, {rejectWithValue}) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:5000/swaps');
+      const response = await fetch("http://localhost:5000/swaps");
       if (!response.ok) throw new Error("Failed to fetch swaps");
       const data = await response.json();
-      return data.slice(0, 10).map(swap => ({ ...swap, isFavorite: swap.isFavorite ?? false })); // limit the mock
+      return data
+        .slice(0, 10)
+        .map((swap) => ({ ...swap, isFavorite: swap.isFavorite ?? false })); // limit the mock
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -53,7 +55,7 @@ export const deleteSwap = createAsyncThunk(
       return rejectWithValue(err.message);
     }
   }
-)
+);
 
 // Async thunk for editing swaps
 export const editSwap = createAsyncThunk(
@@ -62,11 +64,11 @@ export const editSwap = createAsyncThunk(
     try {
       // Replace with real API later
       const response = await fetch(`http://localhost:5000/swaps/${id}`, {
-        method: "PUT",
+        method: "PATCH",
         body: JSON.stringify(updatedData),
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       });
 
       if (!response.ok) throw new Error("Failed to update swap");
@@ -89,7 +91,7 @@ const swapsSlice = createSlice({
     search: "",
     category: "",
     sortOption: "title-asc",
-  }, 
+  },
   reducers: {
     clearSwapStatus: (state) => {
       state.success = false;
@@ -119,7 +121,7 @@ const swapsSlice = createSlice({
         }
         swap.comments.push(comment);
       }
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -151,7 +153,7 @@ const swapsSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(deleteSwap.fulfilled, (state, action) => {
-        state.swaps = state.swaps.filter(swap => swap.id !== action.payload);
+        state.swaps = state.swaps.filter((swap) => swap.id !== action.payload);
       })
       .addCase(editSwap.pending, (state) => {
         state.loading = true;
@@ -172,17 +174,26 @@ const swapsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.success = false;
-      })
+      });
   },
 });
 
-export const { clearSwapStatus, setSearch, setCategoryFilter, setSortOption, toggleFavorite, addComment } = swapsSlice.actions;
+export const {
+  clearSwapStatus,
+  setSearch,
+  setCategoryFilter,
+  setSortOption,
+  toggleFavorite,
+  addComment,
+} = swapsSlice.actions;
 
 export const selectFilteredSwaps = (state) => {
   const { swaps, search, category, sortOption } = state.swaps;
 
   let filteredSwaps = swaps.filter((swap) => {
-    const matchesSearch = swap.title.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = swap.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
     const matchesCategory = category ? swap.category === category : true;
     return matchesSearch && matchesCategory;
   });
@@ -195,6 +206,6 @@ export const selectFilteredSwaps = (state) => {
   }
 
   return filteredSwaps;
-}
+};
 
 export default swapsSlice.reducer;
