@@ -49,6 +49,7 @@ const NewSwap = () => {
         ...formData,
         userId: user.id,
         author: user.name,
+        createdAt: new Date().toISOString(),
       })
     );
   };

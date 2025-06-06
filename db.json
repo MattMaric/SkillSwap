@@ -32,6 +32,17 @@
       "imageUrl": "https://cdn.pixabay.com/photo/2021/12/12/20/00/play-6865967_640.jpg",
       "userId": "1",
       "author": "John"
+    },
+    {
+      "id": "675c",
+      "title": "new swap",
+      "description": "new new swap",
+      "category": "fashion",
+      "imageUrl": "https://cdn.pixabay.com/photo/2021/12/12/20/00/play-6865967_640.jpg",
+      "userId": "1",
+      "author": "John",
+      "createdAt": "2025-06-06T09:38:40.560Z",
+      "updatedAt": "2025-06-06T09:38:57.061Z"
     }
   ],
   "comments": [

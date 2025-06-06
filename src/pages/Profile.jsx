@@ -79,6 +79,16 @@ const Profile = () => {
                   <strong>Category:</strong> {swap.category}
                 </p>
                 <p className="card-text">{swap.description.slice(0, 100)}...</p>
+                <div className="mb-2">
+                  <small className="d-block text-muted">
+                    Created at: {new Date(swap.createdAt).toLocaleString()}
+                  </small>
+                  {swap.updatedAt && (
+                    <small className="d-block text-muted">
+                      Edited at: {new Date(swap.updatedAt).toLocaleString()}
+                    </small>
+                  )}
+                </div>
                 <Link
                   to={`/swaps/${swap.id}`}
                   className="btn btn-sm btn-primary"
