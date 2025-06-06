@@ -4,6 +4,7 @@ import { logout } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import { fetchSwaps } from "../features/swaps/swapsSlice";
 import { fetchCommentsByUser } from "../features/comments/commentsSlice";
+import { deleteSwap } from "../features/swaps/swapsSlice";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -23,6 +24,12 @@ const Profile = () => {
   const handleLogout = () => {
     dispatch(logout());
     navigate("/");
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this swap?")) {
+      dispatch(deleteSwap(id));
+    }
   };
 
   const userComments = commentsByUser?.filter(
@@ -78,6 +85,18 @@ const Profile = () => {
                 >
                   View Swap
                 </Link>
+                <Link
+                  to={`/swaps/edit/${swap.id}`}
+                  className="btn btn-sm btn-warning me-2"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => handleDelete(swap.id)}
+                  className="btn btn-sm btn-danger"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))
