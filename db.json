@@ -5,7 +5,7 @@
       "title": "Vintage Camera for trade",
       "description": "Looking to swap my vintage film camera for a modern DSLR.",
       "category": "Electronics",
-      "imageUrl": "https://placehold.co/400",
+      "imageUrl": "https://cdn.pixabay.com/photo/2021/12/12/20/00/play-6865967_640.jpg",
       "isFavorite": false
     },
     {
@@ -13,7 +13,7 @@
       "title": "Mountain Bike Exchange",
       "description": "Trade my mountain bike for a road bike.",
       "category": "Sports",
-      "imageUrl": "https://placehold.co/400",
+      "imageUrl": "https://cdn.pixabay.com/photo/2021/12/12/20/00/play-6865967_640.jpg",
       "isFavorite": true
     },
     {
@@ -70,6 +70,13 @@
       "name": "John",
       "email": "user@example.com",
       "password": "password"
+    },
+    {
+      "id": "ed7f",
+      "name": "Matt",
+      "email": "matt@email.com",
+      "password": "mattuser123",
+      "createdAt": "2025-06-06T10:31:22.847Z"
     }
   ]
 }

@@ -50,6 +50,7 @@ const NewSwap = () => {
         userId: user.id,
         author: user.name,
         createdAt: new Date().toISOString(),
+        isFavorite: false,
       })
     );
   };
