@@ -40,7 +40,22 @@ const Profile = () => {
   return (
     <div className="container mt-5">
       <h2>Welcome, {user?.name}!</h2>
-      <p>This is your profile page.</p>
+      <div className="card my-4">
+        <div className="card-body">
+          <h5 className="card-title mb-2">Profile Info</h5>
+          <p className="card-text mb-1">
+            <strong>Name: </strong> {user?.name}
+          </p>
+          <p className="card-text mb-1">
+            <strong>Email: </strong> {user?.email}
+          </p>
+          <p className="card-text mb-1">
+            <strong>Joined: </strong>{" "}
+            {new Date(user?.createdAt).toLocaleString() || "Unknown"}
+          </p>
+        </div>
+      </div>
+
       <button className="btn btn-danger" onClick={handleLogout}>
         Logout
       </button>

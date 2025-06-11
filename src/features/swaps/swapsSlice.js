@@ -29,9 +29,7 @@ export const fetchSwaps = createAsyncThunk(
       const response = await fetch("http://localhost:5000/swaps");
       if (!response.ok) throw new Error("Failed to fetch swaps");
       const data = await response.json();
-      return data
-        .slice(0, 10)
-        .map((swap) => ({ ...swap, isFavorite: swap.isFavorite ?? false })); // limit the mock
+      return data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -62,7 +60,6 @@ export const editSwap = createAsyncThunk(
   "swaps/editSwap",
   async ({ id, updatedData }, { rejectWithValue }) => {
     try {
-      // Replace with real API later
       const response = await fetch(`http://localhost:5000/swaps/${id}`, {
         method: "PATCH",
         body: JSON.stringify(updatedData),
@@ -125,6 +122,7 @@ const swapsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Create Swap
       .addCase(createSwap.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -140,6 +138,8 @@ const swapsSlice = createSlice({
         state.error = action.payload;
         state.success = false;
       })
+
+      // Fetch Swaps
       .addCase(fetchSwaps.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -152,9 +152,13 @@ const swapsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // Delete Swap
       .addCase(deleteSwap.fulfilled, (state, action) => {
         state.swaps = state.swaps.filter((swap) => swap.id !== action.payload);
       })
+
+      // Edit Swap
       .addCase(editSwap.pending, (state) => {
         state.loading = true;
         state.error = null;

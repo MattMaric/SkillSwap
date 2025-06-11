@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteSwap, selectFilteredSwaps, toggleFavorite } from "../features/swaps/swapsSlice";
+import {
+  deleteSwap,
+  selectFilteredSwaps,
+  toggleFavorite,
+} from "../features/swaps/swapsSlice";
 import { Link, useNavigate } from "react-router-dom";
 import SwapFilters from "../components/SwapFilters";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,19 +16,18 @@ const MySwaps = () => {
   const swapsPerPage = 6;
 
   const user = useSelector((state) => state.auth.user);
-  // Temporarily disable user filter for testing
-  // const swaps = useSelector((state) => 
-  //   selectFilteredSwaps(state).filter((swap) => swap.userId === user?.id)
-  // );
-
-  // Remove this after testing
-  const swaps = useSelector(selectFilteredSwaps);
+  const swaps = useSelector((state) =>
+    selectFilteredSwaps(state).filter((swap) => swap.userId === user?.id)
+  );
   const { loading } = useSelector((state) => state.swaps);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this swap?");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this swap?"
+    );
     if (confirmed) {
       dispatch(deleteSwap(id));
     }
@@ -39,13 +42,13 @@ const MySwaps = () => {
 
   const handleNext = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
   const handlePrev = () => {
     if (currentPage > 1) {
-      setCurrentPage(prev => prev - 1)
+      setCurrentPage((prev) => prev - 1);
     }
   };
 
@@ -61,20 +64,20 @@ const MySwaps = () => {
         <div className="row">
           {currentSwaps.map((swap) => (
             <div className="col-md-4 mb-4" key={swap.id}>
-              <div 
+              <div
                 className="card h-100 hover-shadow"
                 style={{ cursor: "pointer" }}
               >
                 {swap.imageUrl && (
-                  <img 
-                    src={swap.imageUrl} 
-                    className="card-image-top" 
-                    alt={swap.title} 
+                  <img
+                    src={swap.imageUrl}
+                    className="card-image-top"
+                    alt={swap.title}
                     onClick={() => navigate(`/swaps/${swap.id}`)}
                   />
                 )}
                 <div className="card-body">
-                  <h5 
+                  <h5
                     className="card-title"
                     onClick={() => navigate(`/swaps/${swap.id}`)}
                   >
@@ -82,29 +85,34 @@ const MySwaps = () => {
                   </h5>
                   <p className="card-text">{swap.description}</p>
                   <span className="badge bg-secondary">{swap.category}</span>
-                    <div className="mt-4">
-                      <button
-                        className="btn btn-sm border-0 bg-transparent"
-                        onClick={() => {dispatch(toggleFavorite(swap.id))}}
-                        title="Toggle favorite"
-                        aria-label="Toggle favorite"
-                      >
-                        <FontAwesomeIcon 
-                          icon={swap.isFavorite ? solidHeart : regularHeart}
-                          style={{ color: "red", fontSize: "1.25rem" }}
-                        />
-                      </button>
-                      <Link to={`/swaps/edit/${swap.id}`} className="btn btn-sm btn-warning me-2">
-                        Edit
-                      </Link>
-                      <button 
-                        className="btn btn-sm btn-danger"
-                        onClick={() => handleDelete(swap.id)}
-                        disabled={loading}
-                      >
-                        {loading ? "Deleting..." : "Delete"}
-                      </button>
-                    </div>
+                  <div className="mt-4">
+                    <button
+                      className="btn btn-sm border-0 bg-transparent"
+                      onClick={() => {
+                        dispatch(toggleFavorite(swap.id));
+                      }}
+                      title="Toggle favorite"
+                      aria-label="Toggle favorite"
+                    >
+                      <FontAwesomeIcon
+                        icon={swap.isFavorite ? solidHeart : regularHeart}
+                        style={{ color: "red", fontSize: "1.25rem" }}
+                      />
+                    </button>
+                    <Link
+                      to={`/swaps/edit/${swap.id}`}
+                      className="btn btn-sm btn-warning me-2"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => handleDelete(swap.id)}
+                      disabled={loading}
+                    >
+                      {loading ? "Deleting..." : "Delete"}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -122,7 +130,9 @@ const MySwaps = () => {
           >
             Previous
           </button>
-          <span className="align-self-center">{currentPage} / {totalPages}</span>
+          <span className="align-self-center">
+            {currentPage} / {totalPages}
+          </span>
           <button
             className="btn btn-outline-primary ms-2"
             onClick={handleNext}
@@ -133,6 +143,6 @@ const MySwaps = () => {
         </div>
       )}
     </div>
-  )
+  );
 };
 export default MySwaps;

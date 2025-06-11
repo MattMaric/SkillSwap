@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // Async thunk for user login
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async ({ email, password }, {rejectWithValue}) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
       const res = await fetch(`http://localhost:5000/users?email=${email}`);
       if (!res.ok) throw new Error("Failed to fetch users");
@@ -19,7 +19,8 @@ export const loginUser = createAsyncThunk(
         id: user.id,
         name: user.name,
         email: user.email,
-      }
+        createdAt: user.createdAt,
+      };
     } catch (err) {
       return rejectWithValue("Something went wrong");
     }
@@ -29,19 +30,26 @@ export const loginUser = createAsyncThunk(
 // Async thunk for user signup
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
-  async ({ name, email, password }, {rejectWithValue}) => {
+  async ({ name, email, password }, thunkAPI) => {
     try {
-      const checkRes = await fetch(`http://localhost:5000/users?email=${email}`);
+      const checkRes = await fetch(
+        `http://localhost:5000/users?email=${email}`
+      );
       const existingUsers = await checkRes.json();
 
       if (existingUsers.length > 0) {
-        return rejectWithValue("Email already in use");
+        return thunkAPI.rejectWithValue("Email already in use");
       }
 
       const res = await fetch(`http://localhost:5000/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          createdAt: new Date().toISOString(),
+        }),
       });
 
       if (!res.ok) throw new Error("Failed to register");
@@ -53,7 +61,7 @@ export const registerUser = createAsyncThunk(
 
       return newUser;
     } catch (err) {
-      return rejectWithValue(err.message || "Something went wrong");
+      return thunkAPI.rejectWithValue(err.message || "Something went wrong");
     }
   }
 );
@@ -71,10 +79,11 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       localStorage.removeItem("user");
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
+      // Login User
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -88,6 +97,8 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // Register User
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -100,8 +111,8 @@ const authSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
-  }
+      });
+  },
 });
 
 export const { logout } = authSlice.actions;

@@ -5,7 +5,7 @@
       "title": "Vintage Camera for trade",
       "description": "Looking to swap my vintage film camera for a modern DSLR.",
       "category": "Electronics",
-      "imageUrl": "https://placehold.co/400",
+      "imageUrl": "https://cdn.pixabay.com/photo/2021/12/12/20/00/play-6865967_640.jpg",
       "isFavorite": false
     },
     {
@@ -13,7 +13,7 @@
       "title": "Mountain Bike Exchange",
       "description": "Trade my mountain bike for a road bike.",
       "category": "Sports",
-      "imageUrl": "https://placehold.co/400",
+      "imageUrl": "https://cdn.pixabay.com/photo/2021/12/12/20/00/play-6865967_640.jpg",
       "isFavorite": true
     },
     {
@@ -25,15 +25,6 @@
       "userId": "1"
     },
     {
-      "id": "2196",
-      "title": "Test",
-      "description": "test",
-      "category": "books",
-      "imageUrl": "https://cdn.pixabay.com/photo/2021/12/12/20/00/play-6865967_640.jpg",
-      "userId": "1",
-      "author": "John"
-    },
-    {
       "id": "675c",
       "title": "new swap",
       "description": "new new swap",
@@ -43,6 +34,17 @@
       "author": "John",
       "createdAt": "2025-06-06T09:38:40.560Z",
       "updatedAt": "2025-06-06T09:38:57.061Z"
+    },
+    {
+      "id": "17ab",
+      "title": "German A1",
+      "description": "Teaching German A1",
+      "category": "books",
+      "imageUrl": "https://cdn.pixabay.com/photo/2021/12/12/20/00/play-6865967_640.jpg",
+      "userId": "bf1c",
+      "author": "Joe",
+      "createdAt": "2025-06-08T12:58:02.024Z",
+      "isFavorite": false
     }
   ],
   "comments": [
@@ -62,6 +64,24 @@
       "text": "Awesome bike mate!",
       "likes": [],
       "timestamp": "2025-06-04T11:21:14.007Z"
+    },
+    {
+      "id": "4e6b",
+      "swapId": "2",
+      "author": "Matt",
+      "text": "What a bike!",
+      "likes": [
+        "joe@email.com"
+      ],
+      "timestamp": "2025-06-08T12:49:39.722Z"
+    },
+    {
+      "id": "3e88",
+      "swapId": "2",
+      "author": "Joe",
+      "text": "Amazing!",
+      "likes": [],
+      "timestamp": "2025-06-08T13:00:04.750Z"
     }
   ],
   "users": [
@@ -70,6 +90,20 @@
       "name": "John",
       "email": "user@example.com",
       "password": "password"
+    },
+    {
+      "id": "ed7f",
+      "name": "Matt",
+      "email": "matt@email.com",
+      "password": "mattuser123",
+      "createdAt": "2025-06-06T10:31:22.847Z"
+    },
+    {
+      "id": "bf1c",
+      "name": "Joe",
+      "email": "joe@email.com",
+      "password": "joe123",
+      "createdAt": "2025-06-08T12:57:05.802Z"
     }
   ]
 }
