@@ -8,7 +8,6 @@ import Layout from "../components/layout/Layout";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";
 import NewSwap from "../pages/NewSwap";
-import EditSwap from "../pages/EditSwap";
 import SwapDetails from "../components/SwapDetails";
 import FavoriteSwaps from "../pages/FavoriteSwaps";
 import SignUp from "../pages/SignUp";
@@ -44,7 +43,6 @@ const AppRouter = () => {
               </PrivateRoute>
             }
           />
-          <Route path="/swaps/edit/:id" element={<EditSwap />} />
           <Route path="/swaps/:id" element={<SwapDetails />} />
           <Route path="/favorites" element={<FavoriteSwaps />} />
           <Route path="/login" element={<Login />} />

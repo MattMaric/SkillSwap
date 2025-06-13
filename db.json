@@ -44,7 +44,8 @@
       "userId": "bf1c",
       "author": "Joe",
       "createdAt": "2025-06-08T12:58:02.024Z",
-      "isFavorite": false
+      "isFavorite": false,
+      "updatedAt": "2025-06-13T12:10:13.392Z"
     }
   ],
   "comments": [

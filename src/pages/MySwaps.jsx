@@ -7,12 +7,16 @@ import {
 } from "../features/swaps/swapsSlice";
 import { Link, useNavigate } from "react-router-dom";
 import SwapFilters from "../components/SwapFilters";
+import SwapEditModal from "../components/SwapEditModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
 
 const MySwaps = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedSwap, setSelectedSwap] = useState(null);
+
   const swapsPerPage = 6;
 
   const user = useSelector((state) => state.auth.user);
@@ -50,6 +54,16 @@ const MySwaps = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
     }
+  };
+
+  const handleEditClick = (swap) => {
+    setSelectedSwap(swap);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedSwap(null);
+    setShowModal(false);
   };
 
   return (
@@ -100,8 +114,8 @@ const MySwaps = () => {
                       />
                     </button>
                     <Link
-                      to={`/swaps/edit/${swap.id}`}
                       className="btn btn-sm btn-warning me-2"
+                      onClick={() => handleEditClick(swap)}
                     >
                       Edit
                     </Link>
@@ -119,6 +133,12 @@ const MySwaps = () => {
           ))}
         </div>
       )}
+
+      <SwapEditModal
+        show={showModal}
+        swap={selectedSwap}
+        onClose={closeModal}
+      />
 
       {/* Pagination controls */}
       {swaps.length > swapsPerPage && (
