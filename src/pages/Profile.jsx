@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
+import SwapEditModal from "../components/SwapEditModal";
 import { fetchSwaps } from "../features/swaps/swapsSlice";
 import { fetchCommentsByUser } from "../features/comments/commentsSlice";
 import { deleteSwap } from "../features/swaps/swapsSlice";
 
 const Profile = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedSwap, setSelectedSwap] = useState(null);
+
   const { user } = useSelector((state) => state.auth);
   const { commentsByUser } = useSelector((state) => state.comments);
   const { swaps } = useSelector((state) => state.swaps);
@@ -30,6 +34,16 @@ const Profile = () => {
     if (window.confirm("Are you sure you want to delete this swap?")) {
       dispatch(deleteSwap(id));
     }
+  };
+
+  const handleEditClick = (swap) => {
+    setSelectedSwap(swap);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setSelectedSwap(null);
+    setShowModal(false);
   };
 
   const userComments = commentsByUser?.filter(
@@ -111,8 +125,8 @@ const Profile = () => {
                   View Swap
                 </Link>
                 <Link
-                  to={`/swaps/edit/${swap.id}`}
                   className="btn btn-sm btn-warning me-2"
+                  onClick={() => handleEditClick(swap)}
                 >
                   Edit
                 </Link>
@@ -129,6 +143,12 @@ const Profile = () => {
           <p className="text-muted">You haven't posted any swaps yet.</p>
         )}
       </div>
+
+      <SwapEditModal
+        show={showModal}
+        swap={selectedSwap}
+        onClose={closeModal}
+      />
     </div>
   );
 };
