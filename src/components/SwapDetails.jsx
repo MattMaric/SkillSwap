@@ -8,6 +8,7 @@ import {
   editComment,
   likeComment,
 } from "../features/comments/commentsSlice";
+import { createNotification } from "../features/notifications/notificationsSlice";
 
 const SwapDetails = () => {
   const [commentText, setCommentText] = useState("");
@@ -39,19 +40,36 @@ const SwapDetails = () => {
     commentInputRef.current?.focus();
   }, []);
 
-  const handleAddComment = (e) => {
+  const handleAddComment = async (e) => {
     e.preventDefault();
     if (!commentText.trim()) return;
 
-    dispatch(
-      postComment({
-        swapId: swap.id,
-        author: user?.name || "Anonymous",
-        text: commentText,
-        likes: [],
-        timestamp: new Date().toISOString(),
-      })
-    );
+    const newComment = {
+      swapId: swap.id,
+      author: user?.name || "Anonymous",
+      authorId: user?.id,
+      text: commentText,
+      likes: [],
+      timestamp: new Date().toISOString(),
+    };
+
+    const resultAction = await dispatch(postComment(newComment));
+
+    if (resultAction.meta.requestStatus === "fulfilled") {
+      // Dispatch notification only if commenter is not the owner of the swap
+      if (swap.userId && swap.userId !== user?.id) {
+        dispatch(
+          createNotification({
+            recipientId: swap.userId,
+            senderName: user?.name || "Anonymous",
+            message: `${user?.name || "Someone"} commented on your swap.`,
+            swapId: swap.id,
+            timestamp: new Date().toISOString(),
+            read: false,
+          })
+        );
+      }
+    }
 
     setCommentText("");
   };
