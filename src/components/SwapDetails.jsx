@@ -57,7 +57,7 @@ const SwapDetails = () => {
 
     if (resultAction.meta.requestStatus === "fulfilled") {
       // Dispatch notification only if commenter is not the owner of the swap
-      if (swap.userId && swap.userId !== user?.id) {
+      if (swap.userId !== user.id) {
         dispatch(
           createNotification({
             recipientId: swap.userId,

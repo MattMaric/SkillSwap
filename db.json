@@ -83,6 +83,15 @@
       "text": "Amazing!",
       "likes": [],
       "timestamp": "2025-06-08T13:00:04.750Z"
+    },
+    {
+      "id": "8844",
+      "swapId": "17ab",
+      "author": "Matt",
+      "authorId": "ed7f",
+      "text": "Are you also teaching A2?",
+      "likes": [],
+      "timestamp": "2025-07-07T13:13:22.081Z"
     }
   ],
   "users": [
@@ -105,6 +114,35 @@
       "email": "joe@email.com",
       "password": "joe123",
       "createdAt": "2025-06-08T12:57:05.802Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "d83c",
+      "recipientId": "bf1c",
+      "senderName": "Matt",
+      "message": "Matt commented on your swap.",
+      "swapId": "17ab",
+      "timestamp": "2025-07-07T12:56:46.560Z",
+      "read": false
+    },
+    {
+      "id": "2dd0",
+      "recipientId": "bf1c",
+      "senderName": "Matt",
+      "message": "Matt commented on your swap.",
+      "swapId": "17ab",
+      "timestamp": "2025-07-07T13:07:44.103Z",
+      "read": false
+    },
+    {
+      "id": "7943",
+      "recipientId": "bf1c",
+      "senderName": "Matt",
+      "message": "Matt commented on your swap.",
+      "swapId": "17ab",
+      "timestamp": "2025-07-07T13:13:22.093Z",
+      "read": false
     }
   ]
 }
