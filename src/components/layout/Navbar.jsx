@@ -1,7 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNotificationsByUser } from "../../features/notifications/notificationsSlice";
+import {
+  fetchNotificationsByUser,
+  markNotificationAsRead,
+} from "../../features/notifications/notificationsSlice";
 import "../../styles/navbar.css";
 
 const Navbar = () => {
@@ -18,7 +21,7 @@ const Navbar = () => {
   const userNotifications = notifications.filter(
     (n) => n.recipientId === user?.id
   );
-
+  const unreadNotifications = userNotifications.filter((n) => !n.read);
   const unreadCount = userNotifications.filter((n) => !n.read).length;
 
   return (
@@ -71,16 +74,21 @@ const Navbar = () => {
               )}
             </button>
             <ul className="dropdown-menu dropdown-menu-end">
-              {userNotifications.length === 0 ? (
+              {unreadNotifications.filter((n) => n.read === false).length ===
+              0 ? (
                 <li>
                   <span className="dropdown-item text-muted">
                     No notifications
                   </span>
                 </li>
               ) : (
-                userNotifications.map((n) => (
+                unreadNotifications.map((n) => (
                   <li key={n.id}>
-                    <Link to={`/swaps/${n.swapId}`} className="dropdown-item">
+                    <Link
+                      to={`/swaps/${n.swapId}`}
+                      className="dropdown-item"
+                      onClick={() => dispatch(markNotificationAsRead(n.id))}
+                    >
                       {n.message}
                     </Link>
                   </li>

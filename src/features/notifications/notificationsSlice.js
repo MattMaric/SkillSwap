@@ -34,6 +34,31 @@ export const fetchNotificationsByUser = createAsyncThunk(
   }
 );
 
+// Async thunk to update notification status
+export const markNotificationAsRead = createAsyncThunk(
+  "notifications/markAsRead",
+  async (notificationId, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/notifications/${notificationId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ read: true }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to mark notification as read");
+
+      return await response.json();
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 const notificationsSlice = createSlice({
   name: "notifications",
   initialState: {
@@ -67,6 +92,15 @@ const notificationsSlice = createSlice({
       .addCase(fetchNotificationsByUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      // Update notification status
+      .addCase(markNotificationAsRead.fulfilled, (state, action) => {
+        const index = state.notifications.findIndex(
+          (n) => n.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.notifications[index] = action.payload;
+        }
       });
   },
 });
