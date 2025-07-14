@@ -10,7 +10,7 @@ const HowItWorks = () => {
   return (
     <section>
       <div className="container text-center py-5">
-        <h2>How It Works</h2>
+        <h2 className="fw-bold">How It Works</h2>
         <div className={styles.gridContainer}>
           <div className={styles.cardDiv}>
             <FontAwesomeIcon icon={faUserPlus} size="4x" className="mb-4" />
