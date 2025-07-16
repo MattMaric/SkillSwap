@@ -43,7 +43,7 @@ const Features = () => {
           {featuresList.map((feature, index) => (
             <div className={styles.featureCard} key={index}>
               <FontAwesomeIcon icon={feature.icon} className={styles.icon} />
-              <h3>{feature.title}</h3>
+              <h4>{feature.title}</h4>
               <p>{feature.description}</p>
             </div>
           ))}
