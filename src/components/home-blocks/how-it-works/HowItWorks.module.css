@@ -6,7 +6,7 @@
 }
 
 .cardDiv {
-  background-color: #3c8afe;
+  background-color: #212529;
   padding: 2rem;
   border-radius: 5px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -15,6 +15,16 @@
 .cardDiv:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   transform: translateY(-5px);
+}
+
+.cardDiv h4,
+.cardDiv p {
+  color: white;
+}
+
+.icon {
+  margin-bottom: 1rem;
+  color: #3c8afe;
 }
 
 @media (max-width: 991.98px) {

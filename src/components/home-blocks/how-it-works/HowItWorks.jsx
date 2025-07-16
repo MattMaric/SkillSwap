@@ -13,7 +13,11 @@ const HowItWorks = () => {
         <h2 className="fw-bold">How It Works</h2>
         <div className={styles.gridContainer}>
           <div className={styles.cardDiv}>
-            <FontAwesomeIcon icon={faUserPlus} size="4x" className="mb-4" />
+            <FontAwesomeIcon
+              icon={faUserPlus}
+              size="3x"
+              className={styles.icon}
+            />
             <h4>Create Profile</h4>
             <p>
               Sign up and customize your profile to showcase your skills and
@@ -21,7 +25,11 @@ const HowItWorks = () => {
             </p>
           </div>
           <div className={styles.cardDiv}>
-            <FontAwesomeIcon icon={faSearch} size="4x" className="mb-4" />
+            <FontAwesomeIcon
+              icon={faSearch}
+              size="3x"
+              className={styles.icon}
+            />
             <h4>Explore Swaps</h4>
             <p>
               Browse skill swap opportunities, find interesting people, and
@@ -29,7 +37,11 @@ const HowItWorks = () => {
             </p>
           </div>
           <div className={styles.cardDiv}>
-            <FontAwesomeIcon icon={faExchangeAlt} size="4x" className="mb-4" />
+            <FontAwesomeIcon
+              icon={faExchangeAlt}
+              size="3x"
+              className={styles.icon}
+            />
             <h4>Start Swapping</h4>
             <p>
               Comment, exchange ideas, and start swapping skills to grow
