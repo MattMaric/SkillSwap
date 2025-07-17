@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchNotificationsByUser,
   markNotificationAsRead,
-} from "../../features/notifications/notificationsSlice";
-import "../../styles/navbar.css";
+} from "../../../features/notifications/notificationsSlice";
+import styles from "./Navbar.module.css";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -22,11 +22,13 @@ const Navbar = () => {
     (n) => n.recipientId === user?.id
   );
   const unreadNotifications = userNotifications.filter((n) => !n.read);
-  const unreadCount = userNotifications.filter((n) => !n.read).length;
+  const unreadCount = unreadNotifications.length;
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-      <NavLink className="navbar-brand" to="/">
+    <nav
+      className={`navbar navbar-expand-lg navbar-dark bg-dark px-3 ${styles.navbar}`}
+    >
+      <NavLink className={`navbar-brand ${styles.navbarBrand}`} to="/">
         SkillSwap
       </NavLink>
       <button
@@ -40,27 +42,62 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav ms-auto gap-lg-2">
           <li className="nav-item">
-            <NavLink className="nav-link" to="/">
+            <NavLink
+              className={({ isActive }) =>
+                `nav-link ${styles.navLink} ${
+                  isActive ? styles.navLinkActive : ""
+                }`
+              }
+              to="/"
+            >
               Home
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/explore">
+            <NavLink
+              className={({ isActive }) =>
+                `nav-link ${styles.navLink} ${
+                  isActive ? styles.navLinkActive : ""
+                }`
+              }
+              to="/explore"
+            >
               Explore
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/swaps">
+            <NavLink
+              className={({ isActive }) =>
+                `nav-link ${styles.navLink} ${
+                  isActive ? styles.navLinkActive : ""
+                }`
+              }
+              to="/swaps"
+            >
               My Swaps
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/favorites">
+            <NavLink
+              className={({ isActive }) =>
+                `nav-link ${styles.navLink} ${
+                  isActive ? styles.navLinkActive : ""
+                }`
+              }
+              to="/favorites"
+            >
               Favorites
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/profile">
+            <NavLink
+              className={({ isActive }) =>
+                `nav-link ${styles.navLink} ${
+                  isActive ? styles.navLinkActive : ""
+                }`
+              }
+              to="/profile"
+            >
               Profile
             </NavLink>
           </li>
@@ -79,8 +116,7 @@ const Navbar = () => {
               )}
             </button>
             <ul className="dropdown-menu dropdown-menu-end">
-              {unreadNotifications.filter((n) => n.read === false).length ===
-              0 ? (
+              {unreadNotifications.length === 0 ? (
                 <li>
                   <span className="dropdown-item text-muted">
                     No notifications
