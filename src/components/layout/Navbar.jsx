@@ -40,6 +40,11 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav ms-auto gap-lg-2">
           <li className="nav-item">
+            <NavLink className="nav-link" to="/">
+              Home
+            </NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink className="nav-link" to="/explore">
               Explore
             </NavLink>
