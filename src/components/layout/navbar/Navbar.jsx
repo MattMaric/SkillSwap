@@ -6,6 +6,7 @@ import {
   markNotificationAsRead,
 } from "../../../features/notifications/notificationsSlice";
 import styles from "./Navbar.module.css";
+import HamburgerToggle from "../../hamburger-toggle/HamburgerToggle";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -69,14 +70,11 @@ const Navbar = () => {
         SkillSwap
       </NavLink>
 
-      <button
-        ref={toggleRef}
-        className="navbar-toggler"
-        type="button"
-        onClick={toggleNavbar}
-      >
-        <span className="navbar-toggler-icon" />
-      </button>
+      <HamburgerToggle
+        isOpen={isOpen}
+        toggleNavbar={toggleNavbar}
+        toggleRef={toggleRef}
+      />
 
       <div
         className={`navbar-collapse ${
