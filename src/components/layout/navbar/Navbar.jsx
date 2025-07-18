@@ -1,5 +1,5 @@
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchNotificationsByUser,
@@ -11,6 +11,43 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { notifications } = useSelector((state) => state.notifications);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navListRef = useRef(null);
+  const notificationRef = useRef(null);
+  const toggleRef = useRef(null);
+
+  const toggleNavbar = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const closeNavbar = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const clickedOutsideNavList =
+        navListRef.current && !navListRef.current.contains(event.target);
+      const clickedNotification =
+        notificationRef.current &&
+        notificationRef.current.contains(event.target);
+      const clickedToggle =
+        toggleRef.current && toggleRef.current.contains(event.target);
+
+      if (
+        isOpen &&
+        clickedOutsideNavList &&
+        !clickedNotification &&
+        !clickedToggle
+      ) {
+        closeNavbar();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   useEffect(() => {
     if (user?.id) {
@@ -31,79 +68,46 @@ const Navbar = () => {
       <NavLink className={`navbar-brand ${styles.navbarBrand}`} to="/">
         SkillSwap
       </NavLink>
+
       <button
+        ref={toggleRef}
         className="navbar-toggler"
         type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
+        onClick={toggleNavbar}
       >
         <span className="navbar-toggler-icon" />
       </button>
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav ms-auto gap-lg-2">
-          <li className="nav-item">
-            <NavLink
-              className={({ isActive }) =>
-                `nav-link ${styles.navLink} ${
-                  isActive ? styles.navLinkActive : ""
-                }`
-              }
-              to="/"
-            >
-              Home
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className={({ isActive }) =>
-                `nav-link ${styles.navLink} ${
-                  isActive ? styles.navLinkActive : ""
-                }`
-              }
-              to="/explore"
-            >
-              Explore
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className={({ isActive }) =>
-                `nav-link ${styles.navLink} ${
-                  isActive ? styles.navLinkActive : ""
-                }`
-              }
-              to="/swaps"
-            >
-              My Swaps
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className={({ isActive }) =>
-                `nav-link ${styles.navLink} ${
-                  isActive ? styles.navLinkActive : ""
-                }`
-              }
-              to="/favorites"
-            >
-              Favorites
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className={({ isActive }) =>
-                `nav-link ${styles.navLink} ${
-                  isActive ? styles.navLinkActive : ""
-                }`
-              }
-              to="/profile"
-            >
-              Profile
-            </NavLink>
-          </li>
+
+      <div
+        className={`navbar-collapse ${
+          isOpen ? styles.navOpen : styles.navClosed
+        }`}
+      >
+        <ul ref={navListRef} className="navbar-nav ms-auto gap-lg-2">
+          {[
+            { to: "/", label: "Home" },
+            { to: "/explore", label: "Explore" },
+            { to: "/swaps", label: "My Swaps" },
+            { to: "/favorites", label: "Favorites" },
+            { to: "/profile", label: "Profile" },
+          ].map((link) => (
+            <li className="nav-item" key={link.to}>
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link ${styles.navLink} ${
+                    isActive ? styles.navLinkActive : ""
+                  }`
+                }
+                to={link.to}
+                onClick={closeNavbar}
+              >
+                {link.label}
+              </NavLink>
+            </li>
+          ))}
 
           {/* Notifications Dropdown */}
-          <li className="nav-item dropdown">
+          <li ref={notificationRef} className="nav-item dropdown">
             <button
               className="btn btn-link nav-link dropdown-toggle position-relative"
               data-bs-toggle="dropdown"
@@ -128,7 +132,9 @@ const Navbar = () => {
                     <Link
                       to={`/swaps/${n.swapId}`}
                       className="dropdown-item"
-                      onClick={() => dispatch(markNotificationAsRead(n.id))}
+                      onClick={() => {
+                        dispatch(markNotificationAsRead(n.id));
+                      }}
                     >
                       {n.message}
                     </Link>
@@ -139,7 +145,11 @@ const Navbar = () => {
           </li>
 
           <li className="nav-item text-center">
-            <Link className="btn btn-primary text-white ms-2" to="/new-swap">
+            <Link
+              className="btn btn-primary text-white ms-2"
+              to="/new-swap"
+              onClick={closeNavbar}
+            >
               + Create Swap
             </Link>
           </li>

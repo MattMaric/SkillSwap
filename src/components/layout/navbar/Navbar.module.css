@@ -25,7 +25,37 @@
 }
 
 .navLink:hover,
-.navLinkActive {
+.navLink.navLinkActive {
   color: #ffffff;
   font-weight: 500;
+}
+
+.navOpen {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out,
+    transform 0.4s ease-in-out;
+  overflow: hidden;
+  display: block;
+}
+
+.navClosed {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out,
+    transform 0.4s ease-in-out;
+  overflow: hidden;
+  display: block;
+}
+
+@media (min-width: 992px) {
+  .navOpen,
+  .navClosed {
+    max-height: none;
+    opacity: 1;
+    transform: none;
+    overflow: visible;
+  }
 }
