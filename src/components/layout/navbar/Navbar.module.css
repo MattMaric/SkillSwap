@@ -15,8 +15,8 @@
   transition: color 0.3s ease;
 }
 
-.navbarBrand:hover {
-  color: #0dcaf0;
+.navbar .navbarBrand:hover {
+  color: #3c8afe;
 }
 
 .navLink {
