@@ -7,6 +7,8 @@ import {
 } from "../../../features/notifications/notificationsSlice";
 import styles from "./Navbar.module.css";
 import HamburgerToggle from "../../hamburger-toggle/HamburgerToggle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -106,18 +108,15 @@ const Navbar = () => {
 
           {/* Notifications Dropdown */}
           <li ref={notificationRef} className="nav-item dropdown">
-            <button
-              className="btn btn-link nav-link dropdown-toggle position-relative"
-              data-bs-toggle="dropdown"
-            >
-              🔔
+            <button className="btn btn-link nav-link" data-bs-toggle="dropdown">
+              <FontAwesomeIcon icon={faComment} style={{ color: "#adb5bd" }} />
               {unreadCount > 0 && (
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                   {unreadCount}
                 </span>
               )}
             </button>
-            <ul className="dropdown-menu dropdown-menu-end">
+            <ul className="dropdown-menu dropdown-menu-end mb-3">
               {unreadNotifications.length === 0 ? (
                 <li>
                   <span className="dropdown-item text-muted">
