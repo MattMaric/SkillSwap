@@ -1,0 +1,20 @@
+.wrapper {
+  margin-top: 6rem;
+}
+
+.wrapper .wrapRow {
+  margin-top: 2rem;
+}
+
+.wrapCard {
+  transition: box-shadow 0.3s ease;
+}
+
+.wrapCard:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.wrapIcon {
+  display: inline;
+  float: right;
+}

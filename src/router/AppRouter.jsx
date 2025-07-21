@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
-import Explore from "../pages/Explore";
+import Explore from "../pages/explore/Explore";
 import MySwaps from "../pages/MySwaps";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
