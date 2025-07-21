@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../../features/swaps/swapsSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
@@ -7,6 +7,7 @@ import styles from "./Explore.module.css";
 
 const Explore = () => {
   const { swaps, loading, error } = useSelector((state) => state.swaps);
+  const dispatch = useDispatch();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="alert alert-danger">{error}</div>;
