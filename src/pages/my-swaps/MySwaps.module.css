@@ -2,10 +2,6 @@
   margin-top: 6rem;
 }
 
-.wrapper .wrapRow {
-  margin-top: 2rem;
-}
-
 .wrapCard {
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
@@ -15,7 +11,10 @@
   transform: translateY(-5px);
 }
 
-.wrapIcon {
-  display: inline;
+.heartIcon {
   float: right;
+}
+
+.heartIcon:active {
+  border: none;
 }

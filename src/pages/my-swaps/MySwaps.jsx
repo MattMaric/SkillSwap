@@ -4,13 +4,14 @@ import {
   deleteSwap,
   selectFilteredSwaps,
   toggleFavorite,
-} from "../features/swaps/swapsSlice";
+} from "../../features/swaps/swapsSlice";
 import { Link, useNavigate } from "react-router-dom";
-import SwapFilters from "../components/SwapFilters";
-import SwapEditModal from "../components/SwapEditModal";
+import SwapFilters from "../../components/SwapFilters";
+import SwapEditModal from "../../components/SwapEditModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+import styles from "./MySwaps.module.css";
 
 const MySwaps = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,8 +68,8 @@ const MySwaps = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>My Swaps</h2>
+    <div className={`container ${styles.wrapper}`}>
+      <h2 className="text-center mb-4">My Swaps</h2>
 
       <SwapFilters />
 
@@ -79,7 +80,7 @@ const MySwaps = () => {
           {currentSwaps.map((swap) => (
             <div className="col-md-4 mb-4" key={swap.id}>
               <div
-                className="card h-100 hover-shadow"
+                className={`card ${styles.wrapCard}`}
                 style={{ cursor: "pointer" }}
               >
                 {swap.imageUrl && (
@@ -100,21 +101,8 @@ const MySwaps = () => {
                   <p className="card-text">{swap.description}</p>
                   <span className="badge bg-secondary">{swap.category}</span>
                   <div className="mt-4">
-                    <button
-                      className="btn btn-sm border-0 bg-transparent"
-                      onClick={() => {
-                        dispatch(toggleFavorite(swap.id));
-                      }}
-                      title="Toggle favorite"
-                      aria-label="Toggle favorite"
-                    >
-                      <FontAwesomeIcon
-                        icon={swap.isFavorite ? solidHeart : regularHeart}
-                        style={{ color: "red", fontSize: "1.25rem" }}
-                      />
-                    </button>
                     <Link
-                      className="btn btn-sm btn-warning me-2"
+                      className="btn btn-sm btn-primary text-white me-2"
                       onClick={() => handleEditClick(swap)}
                     >
                       Edit
@@ -125,6 +113,19 @@ const MySwaps = () => {
                       disabled={loading}
                     >
                       {loading ? "Deleting..." : "Delete"}
+                    </button>
+                    <button
+                      className={`btn btn-sm ${styles.heartIcon}`}
+                      onClick={() => {
+                        dispatch(toggleFavorite(swap.id));
+                      }}
+                      title="Toggle favorite"
+                      aria-label="Toggle favorite"
+                    >
+                      <FontAwesomeIcon
+                        icon={swap.isFavorite ? solidHeart : regularHeart}
+                        style={{ color: "red", fontSize: "1.25rem" }}
+                      />
                     </button>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Explore from "../pages/explore/Explore";
-import MySwaps from "../pages/MySwaps";
+import MySwaps from "../pages/my-swaps/MySwaps";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
 import Layout from "../components/layout/Layout";
