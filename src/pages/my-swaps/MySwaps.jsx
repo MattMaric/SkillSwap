@@ -69,7 +69,7 @@ const MySwaps = () => {
 
   return (
     <div className={`container ${styles.wrapper}`}>
-      <h2 className="text-center">My Swaps</h2>
+      <h2 className="text-center mb-4">My Swaps</h2>
 
       <SwapFilters />
 

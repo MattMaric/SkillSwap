@@ -1,5 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setSearch, setCategoryFilter, setSortOption } from "../features/swaps/swapsSlice";
+import {
+  setSearch,
+  setCategoryFilter,
+  setSortOption,
+} from "../features/swaps/swapsSlice";
 
 const SwapFilters = () => {
   const dispatch = useDispatch();
@@ -17,13 +21,15 @@ const SwapFilters = () => {
 
   const handleSortChange = (e) => {
     dispatch(setSortOption(e.target.value));
-  }
+  };
 
   return (
     <div className="mb-4 d-flex flex-column flex-md-row align-items-md-end gap-3">
       <div className="w-100">
-        <label htmlFor="search" className="form-label">Search by Title</label>
-        <input 
+        <label htmlFor="search" className="form-label fst-italic">
+          Search by Title
+        </label>
+        <input
           id="search"
           type="text"
           className="form-control"
@@ -34,7 +40,9 @@ const SwapFilters = () => {
       </div>
 
       <div className="w-100">
-        <label htmlFor="category" className="form-label">Filter by Category</label>
+        <label htmlFor="category" className="form-label fst-italic">
+          Filter by Category
+        </label>
         <select
           id="category"
           className="form-select"
@@ -48,8 +56,10 @@ const SwapFilters = () => {
         </select>
       </div>
 
-      <div className="mb-2">
-        <label htmlFor="sort" className="form-label">Sort by:</label>
+      <div>
+        <label htmlFor="sort" className="form-label fst-italic">
+          Sort by:
+        </label>
         <select
           id="sort"
           className="form-select"
