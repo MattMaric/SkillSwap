@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import styles from "./FavoriteSwaps.module.css";
 
 const FavoriteSwaps = () => {
   const swaps = useSelector((state) => state.swaps.swaps);
@@ -7,8 +8,8 @@ const FavoriteSwaps = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Favorite Swaps</h2>
+    <div className={`container ${styles.wrapper}`}>
+      <h2 className="text-center mb-4">Favorite Swaps</h2>
       {favoriteSwaps.length === 0 ? (
         <p>You haven't liked any swaps yet.</p>
       ) : (
@@ -16,12 +17,15 @@ const FavoriteSwaps = () => {
           {favoriteSwaps.map((swap) => (
             <div className="col-md-4 mb-4" key={swap.id}>
               <div
-                className="card h-100 hover-shadow"
+                className={`card ${styles.wrapCard}`}
                 onClick={() => navigate(`/swaps/${swap.id}`)}
-                style={{ cursor: "pointer" }}
               >
                 {swap.imageUrl && (
-                  <img src={swap.imageUrl} className="card-img-top" alt={swap.title}/>
+                  <img
+                    src={swap.imageUrl}
+                    className="card-img-top"
+                    alt={swap.title}
+                  />
                 )}
                 <div className="card-body">
                   <h5 className="card-title">{swap.title}</h5>
