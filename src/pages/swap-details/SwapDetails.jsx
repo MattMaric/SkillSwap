@@ -7,8 +7,11 @@ import {
   deleteComment,
   editComment,
   likeComment,
-} from "../features/comments/commentsSlice";
-import { createNotification } from "../features/notifications/notificationsSlice";
+} from "../../features/comments/commentsSlice";
+import { createNotification } from "../../features/notifications/notificationsSlice";
+import styles from "./SwapDetails.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 const SwapDetails = () => {
   const [commentText, setCommentText] = useState("");
@@ -105,8 +108,8 @@ const SwapDetails = () => {
 
   return (
     <>
-      <div className="container mt-5">
-        <button onClick={() => navigate(-1)} className="btn btn-secondary mb-4">
+      <div className={`container ${styles.wrapper}`}>
+        <button onClick={() => navigate(-1)} className="btn btn-primary mb-4">
           &larr; Back
         </button>
         <h2>{swap.title}</h2>
@@ -114,7 +117,7 @@ const SwapDetails = () => {
           <img
             src={swap.imageUrl}
             alt={swap.title}
-            className="img-fluid mb-3"
+            className={`img-fluid ${styles.swapImg}`}
           />
         )}
         <p>{swap.description}</p>
@@ -122,7 +125,7 @@ const SwapDetails = () => {
       </div>
 
       {/* Comments Section */}
-      <div className="container mt-5">
+      <div className="container my-5">
         <h4>Comments</h4>
 
         {comments && comments.length > 0 ? (
@@ -133,10 +136,17 @@ const SwapDetails = () => {
 
             return (
               <div className="card mb-3" key={comment.id}>
-                <div className="card-body position-relative">
+                <div className={`card-body ${styles.wrapCard}`}>
                   <h6 className="card-title">{comment.author}</h6>
                   <small className="text-muted">
-                    {new Date(comment.timestamp).toLocaleString()}
+                    {new Date(comment.timestamp).toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
                   </small>
 
                   {isEditing ? (
@@ -147,7 +157,7 @@ const SwapDetails = () => {
                         onChange={(e) => setEditedText(e.target.value)}
                       />
                       <button
-                        className="btn btn-sm btn-success me-2"
+                        className="btn btn-sm btn-primary me-2"
                         onClick={() => handleEditSave(comment.id)}
                         disabled={
                           !editedText.trim() || editedText === comment.text
@@ -156,7 +166,7 @@ const SwapDetails = () => {
                         Save
                       </button>
                       <button
-                        className="btn btn-sm btn-secondary"
+                        className="btn btn-sm btn-danger"
                         onClick={handleCancelEdit}
                       >
                         Cancel
@@ -168,7 +178,18 @@ const SwapDetails = () => {
                       {comment.editedAt && (
                         <p className="text-muted small mb-0 mt-1">
                           <em>
-                            edited {new Date(comment.editedAt).toLocaleString()}
+                            <span className="me-1">Edited:</span>
+                            {new Date(comment.editedAt).toLocaleString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
+                              }
+                            )}
                           </em>
                         </p>
                       )}
@@ -188,14 +209,15 @@ const SwapDetails = () => {
                               )
                             }
                           >
-                            👍 {comment.likes.length}
+                            <FontAwesomeIcon icon={faThumbsUp} />{" "}
+                            {comment.likes.length}
                           </button>
                         )}
 
                         {isAuthor && (
                           <div className="d-flex gap-1">
                             <button
-                              className="btn btn-sm btn-warning fw-bold"
+                              className="btn btn-sm btn-primary fw-bold"
                               onClick={() => handleEditInit(comment)}
                             >
                               Edit
@@ -204,7 +226,7 @@ const SwapDetails = () => {
                               className="btn btn-sm btn-danger fw-bold"
                               onClick={() => handleDelete(comment.id)}
                             >
-                              X
+                              <FontAwesomeIcon icon={faXmark} />
                             </button>
                           </div>
                         )}
@@ -221,7 +243,7 @@ const SwapDetails = () => {
 
         {user ? (
           <form onSubmit={handleAddComment}>
-            <div className="mb-3">
+            <div className="mt-5 mb-3">
               <textarea
                 ref={commentInputRef}
                 className="form-control"
