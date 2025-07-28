@@ -8,7 +8,7 @@ import Layout from "../components/layout/Layout";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";
 import NewSwap from "../pages/NewSwap";
-import SwapDetails from "../components/SwapDetails";
+import SwapDetails from "../pages/swap-details/SwapDetails";
 import FavoriteSwaps from "../pages/favorite-swaps/FavoriteSwaps";
 import SignUp from "../pages/SignUp";
 

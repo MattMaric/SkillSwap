@@ -1,0 +1,14 @@
+.wrapper {
+  margin-top: 6rem;
+}
+
+.wrapCard {
+  background-color: #f1f3f4;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+}
+
+.swapImg {
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
