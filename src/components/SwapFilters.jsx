@@ -4,6 +4,7 @@ import {
   setCategoryFilter,
   setSortOption,
 } from "../features/swaps/swapsSlice";
+import { useState, useEffect } from "react";
 
 const SwapFilters = () => {
   const dispatch = useDispatch();
@@ -11,9 +12,18 @@ const SwapFilters = () => {
   const category = useSelector((state) => state.swaps.category);
   const sortOption = useSelector((state) => state.swaps.sortOption);
 
-  const handleSearchChange = (e) => {
-    dispatch(setSearch(e.target.value));
-  };
+  const [localSearch, setLocalSearch] = useState(search);
+
+  // Debounce effect
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      dispatch(setSearch(localSearch));
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [localSearch, dispatch]);
 
   const handleCategoryChange = (e) => {
     dispatch(setCategoryFilter(e.target.value));
@@ -34,8 +44,8 @@ const SwapFilters = () => {
           type="text"
           className="form-control"
           placeholder="Enter title..."
-          value={search}
-          onChange={handleSearchChange}
+          value={localSearch}
+          onChange={(e) => setLocalSearch(e.target.value)}
         />
       </div>
 
