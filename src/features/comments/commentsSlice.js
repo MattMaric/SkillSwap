@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const API_URL = "http://localhost:5000/comments";
 
 // Async thunk for fetching comments by swap ID
 export const fetchCommentsBySwapId = createAsyncThunk(
   "comments/fetchCommentsBySwapId",
   async (swapId, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/comments?swapId=${swapId}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch comments");
-      return await response.json();
+      const res = await axios.get(`${API_URL}?swapId=${swapId}`);
+      return res.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -21,11 +21,8 @@ export const fetchCommentsByUser = createAsyncThunk(
   "comments/fetchCommentsByUser",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/comments?userId=${userId}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch user comments");
-      return await response.json();
+      const res = await axios.get(`${API_URL}?userId=${userId}`);
+      return res.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -37,15 +34,8 @@ export const postComment = createAsyncThunk(
   "comments/postComment",
   async (newComment, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/comments", {
-        method: "POST",
-        body: JSON.stringify(newComment),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) throw new Error("Failed to post comment");
-      return await response.json();
+      const res = await axios.post(API_URL, newComment);
+      return res.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -57,12 +47,7 @@ export const deleteComment = createAsyncThunk(
   "comments/deleteComment",
   async (commentId, { rejectWithValue }) => {
     try {
-      const res = await fetch(`http://localhost:5000/comments/${commentId}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Failed to delete comment");
-
+      await axios.delete(`${API_URL}/${commentId}`);
       return commentId;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -75,21 +60,11 @@ export const editComment = createAsyncThunk(
   "comments/editComment",
   async ({ id, updatedText }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:5000/comments/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: updatedText,
-          editedAt: new Date().toISOString(),
-        }),
+      const res = await axios.patch(`${API_URL}/${id}`, {
+        text: updatedText,
+        editedAt: new Date().toISOString(),
       });
-
-      if (!response.ok) throw new Error("Failed to edit comment");
-
-      const data = await response.json();
-      return data;
+      return res.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -99,37 +74,23 @@ export const editComment = createAsyncThunk(
 // Async thunk for liking comment
 export const likeComment = createAsyncThunk(
   "comments/likeComment",
-  async ({ commentId, userEmail }, thunkAPI) => {
+  async ({ commentId, userEmail }, { rejectWithValue }) => {
     try {
-      const res = await fetch(`http://localhost:5000/comments/${commentId}`);
-      if (!res.ok) throw new Error("Failed to fetch comment");
-
-      const comment = await res.json();
+      const res = await axios.get(`${API_URL}/${commentId}`);
+      const comment = res.data;
 
       const hasLiked = comment.likes.includes(userEmail);
-      let updatedLikes;
+      const updatedLikes = hasLiked
+        ? comment.likes.filter((email) => email !== userEmail)
+        : [...comment.likes, userEmail];
 
-      if (hasLiked) {
-        updatedLikes = comment.likes.filter((email) => email !== userEmail);
-      } else {
-        updatedLikes = [...comment.likes, userEmail];
-      }
+      const updateRes = await axios.patch(`${API_URL}/${commentId}`, {
+        likes: updatedLikes,
+      });
 
-      const updateRes = await fetch(
-        `http://localhost:5000/comments/${commentId}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ likes: updatedLikes }),
-        }
-      );
-
-      if (!updateRes.ok) throw new Error("Failed to like comment");
-
-      const updatedComment = await updateRes.json();
-      return updatedComment;
+      return updateRes.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
+      return rejectWithValue(err.message);
     }
   }
 );

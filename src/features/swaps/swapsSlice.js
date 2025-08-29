@@ -1,20 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const API_URL = "http://localhost:5000/swaps";
 
 // Async thunk for submitting a new swap
 export const createSwap = createAsyncThunk(
   "swaps/createSwap",
   async (swapData, { rejectWithValue }) => {
     try {
-      // replace with real API later
-      const response = await fetch("http://localhost:5000/swaps", {
-        method: "POST",
-        body: JSON.stringify(swapData),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!response.ok) throw new Error("Failed to create swap");
-      const data = await response.json();
-      return data;
+      const res = await axios.post(API_URL, swapData);
+      return res.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -26,10 +21,8 @@ export const fetchSwaps = createAsyncThunk(
   "swaps/fetchSwaps",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/swaps");
-      if (!response.ok) throw new Error("Failed to fetch swaps");
-      const data = await response.json();
-      return data;
+      const res = await axios.get(API_URL);
+      return res.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -41,13 +34,7 @@ export const deleteSwap = createAsyncThunk(
   "swaps/deleteSwap",
   async (swapId, { rejectWithValue }) => {
     try {
-      // Replace with real API later
-      const response = await fetch(`http://localhost:5000/swaps/${swapId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) throw new Error("Failed to delete swap");
-
+      await axios.delete(`${API_URL}/${swapId}`);
       return swapId;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -60,18 +47,8 @@ export const editSwap = createAsyncThunk(
   "swaps/editSwap",
   async ({ id, updatedData }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:5000/swaps/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify(updatedData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) throw new Error("Failed to update swap");
-
-      const data = await response.json();
-      return { id, updatedData: data };
+      const res = await axios.patch(`${API_URL}/${id}`, updatedData);
+      return { id, updatedData: res.data };
     } catch (err) {
       return rejectWithValue(err.message);
     }

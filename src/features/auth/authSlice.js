@@ -1,14 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const API_URL = "http://localhost:5000/users";
 
 // Async thunk for user login
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const res = await fetch(`http://localhost:5000/users?email=${email}`);
-      if (!res.ok) throw new Error("Failed to fetch users");
+      const res = await axios.get(`${API_URL}?email=${email}`);
+      const users = res.data;
 
-      const users = await res.json();
       const user = users.find((u) => u.password === password);
 
       if (!user) {
@@ -32,29 +34,21 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async ({ name, email, password }, thunkAPI) => {
     try {
-      const checkRes = await fetch(
-        `http://localhost:5000/users?email=${email}`
-      );
-      const existingUsers = await checkRes.json();
+      const checkRes = await axios.get(`${API_URL}?email=${email}`);
+      const existingUsers = checkRes.data;
 
       if (existingUsers.length > 0) {
         return thunkAPI.rejectWithValue("Email already in use");
       }
 
-      const res = await fetch(`http://localhost:5000/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          createdAt: new Date().toISOString(),
-        }),
+      const res = await axios.post(API_URL, {
+        name,
+        email,
+        password,
+        createdAt: new Date().toISOString(),
       });
 
-      if (!res.ok) throw new Error("Failed to register");
-
-      const newUser = await res.json();
+      const newUser = res.data;
 
       // Auto-login
       await thunkAPI.dispatch(loginUser({ name, email, password }));
